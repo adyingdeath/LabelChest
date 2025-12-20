@@ -48,6 +48,8 @@ namespace labelchest
 
                 string currentLabel = chest.modData.TryGetValue(LabelKey, out string val) ? val : "";
 
+                string title = Helper.Translation.Get("set-label-title");
+
                 // Open NamingMenu
                 Game1.activeClickableMenu = new NamingMenu(delegate (string input)
                 {
@@ -64,7 +66,7 @@ namespace labelchest
 
                     // Close the NamingMenu
                     Game1.exitActiveMenu();
-                }, "Set Chest Label", currentLabel);
+                }, title, currentLabel);
             }
         }
 
@@ -98,10 +100,8 @@ namespace labelchest
             // Determine text
             string labelText = chest.modData.TryGetValue(LabelKey, out string val) && !string.IsNullOrWhiteSpace(val)
                 ? val 
-                : "Set Label"; 
+                : Helper.Translation.Get("set-label-button");; 
 
-            Color textColor = chest.modData.ContainsKey(LabelKey) ? Game1.textColor : Game1.textShadowColor;
-            
             // Center text
             Vector2 textSize = Game1.smallFont.MeasureString(labelText);
             Vector2 textPos = new Vector2(
@@ -109,7 +109,7 @@ namespace labelchest
                 buttonRect.Y + (buttonRect.Height - textSize.Y) / 2
             );
 
-            b.DrawString(Game1.smallFont, labelText, textPos, textColor);
+            b.DrawString(Game1.smallFont, labelText, textPos, Game1.textColor);
 
             // Draw hover effect
             if (buttonRect.Contains(Game1.getMouseX(), Game1.getMouseY()))
