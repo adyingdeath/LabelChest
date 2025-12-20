@@ -16,11 +16,11 @@ namespace labelchest
         private const string LabelKey = "labelchest.label";
 
         // UI Configuration
-        private const int ButtonHeight = 56;
+        private const int ButtonHeight = 48;
         private const int MinButtonWidth = 150;
         
         // World Draw Configuration
-        private const float WorldFontScale = 0.7f;
+        private const float WorldFontScale = 0.8f;
         private const int WorldTileSize = 64;
         private const int WorldMaxWidth = 60;
 
@@ -66,6 +66,11 @@ namespace labelchest
                     Game1.exitActiveMenu();
                 }, "Set Chest Label", currentLabel);
             }
+        }
+
+        public static void DrawPoint(SpriteBatch b, Vector2 position, Color color, int size = 4)
+        {
+            b.Draw(Game1.staminaRect, new Rectangle((int)position.X, (int)position.Y, size, size), color);
         }
 
         private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
@@ -153,9 +158,16 @@ namespace labelchest
         private Rectangle GetLabelButtonBounds(ItemGrabMenu menu)
         {
             int width = Math.Max(MinButtonWidth, menu.width / 3);
-            int x = menu.xPositionOnScreen + (menu.width - width) / 2; 
+            int x = menu.xPositionOnScreen + (menu.width - width) / 2;
             // Position above the menu content
-            int y = menu.yPositionOnScreen - ButtonHeight - 12; 
+            int y = menu.ItemsToGrabMenu.yPositionOnScreen - ButtonHeight - (
+                menu.ItemsToGrabMenu.capacity switch
+                {
+                    36 => 24,
+                    70 => 8,
+                    _ => 24,
+                }
+            );
 
             return new Rectangle(x, y, width, ButtonHeight);
         }
@@ -176,7 +188,7 @@ namespace labelchest
             float totalHeight = lines.Count * lineHeight;
             
             // Draw slightly above center to avoid overlap
-            float startY = screenPos.Y + (WorldTileSize / 2f) - (totalHeight / 2f) + 5f; 
+            float startY = screenPos.Y - (WorldTileSize / 4f) - (totalHeight / 2f) + 2f; 
 
             foreach (string line in lines)
             {
