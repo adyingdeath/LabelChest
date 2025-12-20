@@ -16,7 +16,7 @@ namespace labelchest
         private const string LabelKey = "labelchest.label";
 
         // UI Configuration
-        private const int ButtonHeight = 48;
+        private const int ButtonHeight = 56;
         private const int MinButtonWidth = 150;
         
         // World Draw Configuration
@@ -78,15 +78,15 @@ namespace labelchest
 
             // Draw button background
             IClickableMenu.drawTextureBox(
-                b, 
-                Game1.mouseCursors, 
-                new Rectangle(384, 396, 15, 15), 
-                buttonRect.X, 
-                buttonRect.Y, 
-                buttonRect.Width, 
-                buttonRect.Height, 
-                Color.White, 
-                1f, 
+                b,
+                Game1.menuTexture,
+                new Rectangle(0, 256, 60, 60),
+                buttonRect.X,
+                buttonRect.Y,
+                buttonRect.Width,
+                buttonRect.Height,
+                Color.White,
+                1f,
                 false
             );
 
@@ -110,8 +110,8 @@ namespace labelchest
             if (buttonRect.Contains(Game1.getMouseX(), Game1.getMouseY()))
             {
                 IClickableMenu.drawTextureBox(
-                    b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15),
-                    buttonRect.X, buttonRect.Y, buttonRect.Width, buttonRect.Height, 
+                    b, Game1.menuTexture, new Rectangle(0, 256, 60, 60),
+                    buttonRect.X, buttonRect.Y, buttonRect.Width, buttonRect.Height,
                     Color.White * 0.25f, 1f, false);
             }
 
