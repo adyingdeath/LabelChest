@@ -9,11 +9,11 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-namespace labelchest
+namespace LabelChest
 {
     public class ModEntry : Mod
     {
-        private const string LabelKey = "labelchest.label";
+        private const string LabelKey = "LabelChest.label";
 
         // UI Configuration
         private const int ButtonHeight = 48;
@@ -50,8 +50,8 @@ namespace labelchest
 
                 string title = Helper.Translation.Get("set-label-title");
 
-                // Open NamingMenu
-                Game1.activeClickableMenu = new NamingMenu(delegate (string input)
+                // Open ChestNamingMenu
+                Game1.activeClickableMenu = new ChestNamingMenu(title, currentLabel, delegate (string input)
                 {
                     // 1. Update Data
                     if (string.IsNullOrWhiteSpace(input))
@@ -63,10 +63,7 @@ namespace labelchest
                     {
                         chest.modData[LabelKey] = input;
                     }
-
-                    // Close the NamingMenu
-                    Game1.exitActiveMenu();
-                }, title, currentLabel);
+                });
             }
         }
 

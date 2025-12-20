@@ -3,7 +3,7 @@
   "Author": "adyingdeath",
   "Version": "1.0.0",
   "Description": "Add labels to your chests.",
-  "UniqueID": "adyingdeath.labelchest",
+  "UniqueID": "adyingdeath.LabelChest",
   "EntryDll": "LabelChest.dll",
   "MinimumApiVersion": "4.0.0",
   "UpdateKeys": []
