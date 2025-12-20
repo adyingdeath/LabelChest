@@ -6,5 +6,7 @@
   "UniqueID": "adyingdeath.LabelChest",
   "EntryDll": "LabelChest.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [
+    "Nexus:40415"
+  ]
 }
