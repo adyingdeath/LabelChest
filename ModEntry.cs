@@ -67,11 +67,6 @@ namespace LabelChest
             }
         }
 
-        public static void DrawPoint(SpriteBatch b, Vector2 position, Color color, int size = 4)
-        {
-            b.Draw(Game1.staminaRect, new Rectangle((int)position.X, (int)position.Y, size, size), color);
-        }
-
         private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
         {
             var (chest, menu) = GetCurrentChestMenu();
