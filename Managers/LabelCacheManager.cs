@@ -16,9 +16,18 @@ namespace LabelChest.Managers
         private SpriteBatch? _spriteBatch;
 
         // Configuration constants
-        private const float WorldFontScale = 0.8f;
-        private const int WorldMaxWidth = 60;
+        private float WorldFontScale = 0.8f;
+        private const int WorldMaxWidth = 70;
         private const int Padding = 4;
+
+        public LabelCacheManager(LocalizedContentManager.LanguageCode languageCode)
+        {
+            WorldFontScale = languageCode switch
+            {
+                LocalizedContentManager.LanguageCode.en => 0.65f,
+                _ => 0.85f
+            };
+        }
 
         /// <summary>
         /// Adds a label to be processed in the next update tick.
@@ -38,7 +47,7 @@ namespace LabelChest.Managers
         {
             if (_labelCache.TryGetValue(text, out texture) && !texture.IsDisposed)
                 return true;
-                
+
             texture = null;
             return false;
         }
@@ -78,9 +87,9 @@ namespace LabelChest.Managers
                 font, text, WorldMaxWidth / WorldFontScale,
                 out Vector2 textBoxSize
             );
-            
+
             if (lines.Count == 0) return;
-            
+
             int width = (int)textBoxSize.X + Padding * 2;
             int height = (int)textBoxSize.Y + Padding * 2;
 
@@ -109,8 +118,7 @@ namespace LabelChest.Managers
                 Vector2 pos = new Vector2(x, currentY);
 
                 // Draw outline
-                float offset = Math.Max(1.0f, WorldFontScale);
-                DrawTextOutline(font, line, pos, offset, WorldFontScale);
+                DrawTextOutline(font, line, pos);
 
                 // Draw text
                 _spriteBatch.DrawString(font, line, pos, Color.White, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
@@ -122,12 +130,20 @@ namespace LabelChest.Managers
             _labelCache[text] = target;
         }
 
-        private void DrawTextOutline(SpriteFont font, string text, Vector2 position, float offset, float scale)
+        private void DrawTextOutline(SpriteFont font, string text, Vector2 position)
         {
-            _spriteBatch!.DrawString(font, text, position + new Vector2(-offset, -offset), Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
-            _spriteBatch.DrawString(font, text, position + new Vector2(offset, offset), Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
-            _spriteBatch.DrawString(font, text, position + new Vector2(offset, -offset), Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
-            _spriteBatch.DrawString(font, text, position + new Vector2(-offset, offset), Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
+            const float offset = 2.5f;
+            const float TWO_PI = (float)(2 * Math.PI);
+            const float TENTH_PI = (float)(Math.PI / 10);
+            for (float theta = 0; theta <= TWO_PI; theta += TENTH_PI)
+            {
+                for (float radius = offset; radius >= 0; radius -= 0.25f)
+                {
+                    float x = (float)(Math.Cos(theta) * radius);
+                    float y = (float)(Math.Sin(theta) * radius);
+                    _spriteBatch!.DrawString(font, text, position + new Vector2(x, y), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
+                }
+            }
         }
 
         /// <summary>
@@ -140,7 +156,7 @@ namespace LabelChest.Managers
                 if (texture != null && !texture.IsDisposed)
                     texture.Dispose();
             }
-            
+
             _labelCache.Clear();
             _pendingLabels.Clear();
         }
@@ -149,7 +165,7 @@ namespace LabelChest.Managers
         {
             ClearCache();
             _spriteBatch?.Dispose();
-            
+
             GC.SuppressFinalize(this);
         }
     }

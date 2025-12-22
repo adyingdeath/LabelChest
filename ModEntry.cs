@@ -21,7 +21,7 @@ namespace LabelChest
         public override void Entry(IModHelper helper)
         {
             // Initialize managers
-            _cacheManager = new LabelCacheManager();
+            _cacheManager = new LabelCacheManager(helper.Translation.LocaleEnum);
             _menuButton = new MenuLabelButton(Helper.Translation, OnLabelButtonClicked);
             _worldRenderer = new WorldLabelRenderer(_cacheManager);
 
