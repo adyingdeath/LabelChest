@@ -24,11 +24,32 @@ namespace LabelChest
         private const int WorldTileSize = 64;
         private const int WorldMaxWidth = 60;
 
+        // Cache Management
+        private readonly Dictionary<string, Texture2D> _labelCache = new();
+        private readonly HashSet<string> _pendingLabels = new();
+        private SpriteBatch? _cacheSpriteBatch;
+
         public override void Entry(IModHelper helper)
         {
             helper.Events.Display.RenderedWorld += OnRenderedWorld;
             helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            
+            // Cleanup cache on load/exit to free VRAM
+            helper.Events.GameLoop.SaveLoaded += OnCleanupCache;
+            helper.Events.GameLoop.ReturnedToTitle += OnCleanupCache;
+        }
+
+        private void OnCleanupCache(object? sender, EventArgs e)
+        {
+            foreach (var texture in _labelCache.Values)
+            {
+                if (texture != null && !texture.IsDisposed)
+                    texture.Dispose();
+            }
+            _labelCache.Clear();
+            _pendingLabels.Clear();
         }
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
@@ -116,6 +137,106 @@ namespace LabelChest
             menu.drawMouse(b);
         }
 
+        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
+        {
+            // Lazy Loading: Only generate textures if there are pending labels
+            if (_pendingLabels.Count == 0) return;
+
+            var device = Game1.graphics.GraphicsDevice;
+            if (device == null || device.IsDisposed) return;
+
+            _cacheSpriteBatch ??= new SpriteBatch(device);
+
+            // Save previous render targets to restore later
+            var previousRenderTargets = device.GetRenderTargets();
+
+            // Process pending queue
+            // Copy list to allow safe modification/iteration
+            var tasks = new List<string>(_pendingLabels);
+            _pendingLabels.Clear();
+
+            foreach (string text in tasks)
+            {
+                // Skip if valid texture already exists
+                if (_labelCache.TryGetValue(text, out var existing) && !existing.IsDisposed)
+                    continue;
+
+                GenerateLabelTexture(device, text);
+            }
+
+            // Restore RenderTarget
+            device.SetRenderTargets(previousRenderTargets);
+        }
+
+        private void GenerateLabelTexture(GraphicsDevice device, string text)
+        {
+            SpriteFont font = Game1.smallFont;
+            
+            // 1. Wrap Text
+            List<string> lines = WrapText(font, text, WorldMaxWidth / WorldFontScale);
+            if (lines.Count == 0) return;
+
+            // 2. Measure Dimensions
+            float lineHeight = font.MeasureString("A").Y * WorldFontScale;
+            float totalTextHeight = lines.Count * lineHeight;
+            float maxLineWidth = 0;
+            foreach (var line in lines)
+            {
+                float w = font.MeasureString(line).X;
+                if (w > maxLineWidth) maxLineWidth = w;
+            }
+
+            // Calculate texture size with padding and scaling
+            int padding = 4;
+            int width = (int)(maxLineWidth) + padding * 2;
+            int height = (int)(totalTextHeight) + padding * 2;
+
+            // 3. Create RenderTarget
+            RenderTarget2D target = new RenderTarget2D(
+                device, 
+                width, 
+                height, 
+                false, 
+                SurfaceFormat.Color, 
+                DepthFormat.None, 
+                0, 
+                RenderTargetUsage.PreserveContents
+            );
+
+            // 4. Draw to Target
+            device.SetRenderTarget(target);
+            device.Clear(Color.Transparent);
+
+            // Use LinearClamp for internal drawing to keep characters' edges smooth after downscaling
+            _cacheSpriteBatch!.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp);
+
+            float currentY = padding;
+            foreach (string line in lines)
+            {
+                // Center line horizontally in the texture
+                Vector2 lineSize = font.MeasureString(line) * WorldFontScale;
+                float x = (width - lineSize.X) / 2f;
+                Vector2 pos = new Vector2(x, currentY);
+
+                // Draw Outline (Black) - bake outline into texture
+                float offset = Math.Max(1.0f, WorldFontScale);
+                _cacheSpriteBatch.DrawString(font, line, pos + new Vector2(-offset, -offset), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
+                _cacheSpriteBatch.DrawString(font, line, pos + new Vector2(offset, offset), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
+                _cacheSpriteBatch.DrawString(font, line, pos + new Vector2(offset, -offset), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
+                _cacheSpriteBatch.DrawString(font, line, pos + new Vector2(-offset, offset), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
+
+                // Draw Text (White)
+                _cacheSpriteBatch.DrawString(font, line, pos, Color.White, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
+
+                currentY += lineHeight * WorldFontScale;
+            }
+
+            _cacheSpriteBatch.End();
+
+            // 5. Store in Cache
+            _labelCache[text] = target;
+        }
+
         private void OnRenderedWorld(object? sender, RenderedWorldEventArgs e)
         {
             if (!Context.IsWorldReady) return;
@@ -166,6 +287,14 @@ namespace LabelChest
 
         private void DrawChestLabelInWorld(SpriteBatch b, Vector2 tileLocation, string text)
         {
+            // Check if texture exists and is valid
+            if (!_labelCache.TryGetValue(text, out Texture2D? texture) || texture.IsDisposed || texture.IsDisposed)
+            {
+                // If missing/lost, queue it for next tick
+                _pendingLabels.Add(text);
+                return;
+            }
+
             Vector2 screenPos = Game1.GlobalToLocal(Game1.viewport, tileLocation * 64f);
             
             // Bounds check
@@ -173,32 +302,16 @@ namespace LabelChest
                 screenPos.Y < -64 || screenPos.Y > Game1.viewport.Height)
                 return;
 
-            SpriteFont font = Game1.smallFont;
-            List<string> lines = WrapText(font, text, WorldMaxWidth / WorldFontScale);
-            
-            float lineHeight = font.MeasureString("A").Y * WorldFontScale;
-            float totalHeight = lines.Count * lineHeight;
-            
-            // Draw slightly above center to avoid overlap
-            float startY = screenPos.Y - (WorldTileSize / 4f) - (totalHeight / 2f) + 2f; 
+            float drawWidth = texture.Width;
+            float drawHeight = texture.Height;
 
-            foreach (string line in lines)
-            {
-                Vector2 size = font.MeasureString(line) * WorldFontScale;
-                float startX = screenPos.X + (WorldTileSize / 2f) - (size.X / 2f);
-                Vector2 position = new Vector2(startX, startY);
+            /* Center above chest. This is the center of the upper edge of the 
+            tile the chest is in. */
+            float startX = screenPos.X + (WorldTileSize / 2f) - (drawWidth / 2f);
+            float startY = screenPos.Y - (drawHeight / 2f);
 
-                // Draw outline (Black)
-                b.DrawString(font, line, position + new Vector2(-1, -1), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
-                b.DrawString(font, line, position + new Vector2(1, 1), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
-                b.DrawString(font, line, position + new Vector2(1, -1), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
-                b.DrawString(font, line, position + new Vector2(-1, 1), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
-
-                // Draw text (White)
-                b.DrawString(font, line, position, Color.White, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
-
-                startY += lineHeight;
-            }
+            // Draw the pre-rendered texture
+            b.Draw(texture, new Vector2(startX, startY), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 1f);
         }
 
         // Text wrapping logic
