@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace LabelChest
+namespace LabelChest.UI
 {
     public class ChestNamingMenu : IClickableMenu
     {
