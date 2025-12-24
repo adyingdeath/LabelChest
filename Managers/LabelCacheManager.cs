@@ -4,13 +4,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace LabelChest.Managers
-{
+namespace LabelChest.Managers {
     /// <summary>
     /// Manages caching of label textures for efficient rendering.
     /// </summary>
-    public class LabelCacheManager : IDisposable
-    {
+    public class LabelCacheManager : IDisposable {
         private readonly Dictionary<string, Texture2D> _labelCache = new();
         private readonly HashSet<string> _pendingLabels = new();
         private SpriteBatch? _spriteBatch;
@@ -20,10 +18,8 @@ namespace LabelChest.Managers
         private const int WorldMaxWidth = 70;
         private const int Padding = 4;
 
-        public LabelCacheManager(LocalizedContentManager.LanguageCode languageCode)
-        {
-            WorldFontScale = languageCode switch
-            {
+        public LabelCacheManager(LocalizedContentManager.LanguageCode languageCode) {
+            WorldFontScale = languageCode switch {
                 LocalizedContentManager.LanguageCode.en => 0.65f,
                 _ => 0.85f
             };
@@ -32,10 +28,8 @@ namespace LabelChest.Managers
         /// <summary>
         /// Adds a label to be processed in the next update tick.
         /// </summary>
-        public void QueueLabel(string text)
-        {
-            if (!string.IsNullOrWhiteSpace(text))
-            {
+        public void QueueLabel(string text) {
+            if (!string.IsNullOrWhiteSpace(text)) {
                 _pendingLabels.Add(text);
             }
         }
@@ -43,8 +37,7 @@ namespace LabelChest.Managers
         /// <summary>
         /// Checks if a label texture exists and is valid.
         /// </summary>
-        public bool TryGetTexture(string text, out Texture2D? texture)
-        {
+        public bool TryGetTexture(string text, out Texture2D? texture) {
             if (_labelCache.TryGetValue(text, out texture) && !texture.IsDisposed)
                 return true;
 
@@ -55,8 +48,7 @@ namespace LabelChest.Managers
         /// <summary>
         /// Processes pending labels and generates their textures.
         /// </summary>
-        public void ProcessPendingLabels(GraphicsDevice device)
-        {
+        public void ProcessPendingLabels(GraphicsDevice device) {
             if (_pendingLabels.Count == 0 || device == null || device.IsDisposed)
                 return;
 
@@ -66,8 +58,7 @@ namespace LabelChest.Managers
             var tasks = new List<string>(_pendingLabels);
             _pendingLabels.Clear();
 
-            foreach (string text in tasks)
-            {
+            foreach (string text in tasks) {
                 if (TryGetTexture(text, out _) && !_labelCache[text].IsDisposed)
                     continue;
 
@@ -80,8 +71,7 @@ namespace LabelChest.Managers
         /// <summary>
         /// Generates a texture for a label text with proper formatting.
         /// </summary>
-        private void GenerateLabelTexture(GraphicsDevice device, string text)
-        {
+        private void GenerateLabelTexture(GraphicsDevice device, string text) {
             SpriteFont font = Game1.smallFont;
             List<string> lines = TextUtils.WrapText(
                 font, text, WorldMaxWidth / WorldFontScale,
@@ -111,8 +101,7 @@ namespace LabelChest.Managers
             _spriteBatch!.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp);
 
             float currentY = Padding;
-            foreach (string line in lines)
-            {
+            foreach (string line in lines) {
                 Vector2 lineSize = font.MeasureString(line) * WorldFontScale;
                 float x = (width - lineSize.X) / 2f;
                 Vector2 pos = new Vector2(x, currentY);
@@ -130,15 +119,12 @@ namespace LabelChest.Managers
             _labelCache[text] = target;
         }
 
-        private void DrawTextOutline(SpriteFont font, string text, Vector2 position)
-        {
+        private void DrawTextOutline(SpriteFont font, string text, Vector2 position) {
             const float offset = 2.5f;
             const float TWO_PI = (float)(2 * Math.PI);
             const float TENTH_PI = (float)(Math.PI / 10);
-            for (float theta = 0; theta <= TWO_PI; theta += TENTH_PI)
-            {
-                for (float radius = offset; radius >= 0; radius -= 0.25f)
-                {
+            for (float theta = 0; theta <= TWO_PI; theta += TENTH_PI) {
+                for (float radius = offset; radius >= 0; radius -= 0.25f) {
                     float x = (float)(Math.Cos(theta) * radius);
                     float y = (float)(Math.Sin(theta) * radius);
                     _spriteBatch!.DrawString(font, text, position + new Vector2(x, y), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
@@ -149,10 +135,8 @@ namespace LabelChest.Managers
         /// <summary>
         /// Cleans up all cached textures.
         /// </summary>
-        public void ClearCache()
-        {
-            foreach (var texture in _labelCache.Values)
-            {
+        public void ClearCache() {
+            foreach (var texture in _labelCache.Values) {
                 if (texture != null && !texture.IsDisposed)
                     texture.Dispose();
             }
@@ -161,8 +145,7 @@ namespace LabelChest.Managers
             _pendingLabels.Clear();
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             ClearCache();
             _spriteBatch?.Dispose();
 
