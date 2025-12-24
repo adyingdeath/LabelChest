@@ -1,4 +1,6 @@
 {
     "set-label-title": "Set Chest Label",
-    "set-label-button": "Set Label"
+    "set-label-button": "Set Label",
+    "cancel-button": "Clear",
+    "ok-button": "OK"
 }

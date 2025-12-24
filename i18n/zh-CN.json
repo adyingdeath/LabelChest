@@ -1,4 +1,6 @@
 {
     "set-label-title": "箱子名称",
-    "set-label-button": "设置名称"
+    "set-label-button": "设置名称",
+    "cancel-button": "清除",
+    "ok-button": "确定"
 }

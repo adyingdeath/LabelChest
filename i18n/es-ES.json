@@ -1,4 +1,6 @@
 {
     "set-label-title": "Etiqueta del cofre",
-    "set-label-button": "Poner etiqueta"
+    "set-label-button": "Poner etiqueta",
+    "cancel-button": "Borrar",
+    "ok-button": "Aceptar"
 }

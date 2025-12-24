@@ -1,4 +1,6 @@
 {
     "set-label-title": "Láda címke",
-    "set-label-button": "Címke beállítása"
+    "set-label-button": "Címke beállítása",
+    "cancel-button": "Törlés",
+    "ok-button": "OK"
 }

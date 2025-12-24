@@ -1,4 +1,6 @@
 {
     "set-label-title": "Etichetta baule",
-    "set-label-button": "Imposta etichetta"
+    "set-label-button": "Imposta etichetta",
+    "cancel-button": "Cancella",
+    "ok-button": "OK"
 }

@@ -1,4 +1,6 @@
 {
     "set-label-title": "Truhenbeschriftung",
-    "set-label-button": "Beschriften"
+    "set-label-button": "Beschriften",
+    "cancel-button": "Löschen",
+    "ok-button": "OK"
 }

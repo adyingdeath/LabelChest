@@ -1,4 +1,6 @@
 {
     "set-label-title": "Метка сундука",
-    "set-label-button": "Задать метку"
+    "set-label-button": "Задать метку",
+    "cancel-button": "Очистить",
+    "ok-button": "OK"
 }

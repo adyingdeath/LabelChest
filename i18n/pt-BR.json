@@ -1,4 +1,6 @@
 {
     "set-label-title": "Rótulo do Baú",
-    "set-label-button": "Definir Rótulo"
+    "set-label-button": "Definir Rótulo",
+    "cancel-button": "Limpar",
+    "ok-button": "OK"
 }

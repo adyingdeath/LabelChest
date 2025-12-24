@@ -1,4 +1,6 @@
 {
     "set-label-title": "Étiquette du coffre",
-    "set-label-button": "Définir l'étiquette"
+    "set-label-button": "Définir l'étiquette",
+    "cancel-button": "Effacer",
+    "ok-button": "OK"
 }

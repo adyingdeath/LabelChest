@@ -1,4 +1,6 @@
 {
     "set-label-title": "상자 라벨",
-    "set-label-button": "라벨 설정"
+    "set-label-button": "라벨 설정",
+    "cancel-button": "지우기",
+    "ok-button": "확인"
 }

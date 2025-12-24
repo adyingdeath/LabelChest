@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -66,13 +67,22 @@ namespace LabelChest
             if (chest == null) 
                 return;
                 
-            string title = Helper.Translation.Get("set-label-title");
+            // Create translation dictionary for the naming menu
+            ChestNamingMenuTranslation namingTranslations = new(
+                Helper.Translation.Get("set-label-title"),
+                Helper.Translation.Get("cancel-button"),
+                Helper.Translation.Get("ok-button")
+            );
 
-            // Open ChestNamingMenu
-            Game1.activeClickableMenu = new ChestNamingMenu(title, currentLabel, (label) => 
-            {
-                ChestLabelManager.SetLabel(chest, label);
-            });
+            // Open ChestNamingMenu with translation dictionary
+            Game1.activeClickableMenu = new ChestNamingMenu(
+                namingTranslations,
+                currentLabel,
+                (label) => 
+                {
+                    ChestLabelManager.SetLabel(chest, label);
+                }
+            );
         }
 
         private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)

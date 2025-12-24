@@ -1,4 +1,6 @@
 {
     "set-label-title": "箱のラベル",
-    "set-label-button": "ラベル設定"
+    "set-label-button": "ラベル設定",
+    "cancel-button": "クリア",
+    "ok-button": "OK"
 }
