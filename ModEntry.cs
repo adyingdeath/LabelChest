@@ -43,15 +43,15 @@ namespace LabelChest
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
-            if (e.Button != SButton.MouseLeft) 
-                return;
-
             var (chest, menu) = GetCurrentChestMenu();
             if (chest == null || menu == null) 
                 return;
 
-            // Check if label button was clicked
-            _menuButton.HandleClick(menu, chest, e.Cursor.ScreenPixels);
+            // Check if label button was clicked via mouse or controller action button
+            if (e.Button.IsActionButton())
+            {
+                _menuButton.HandleClick(menu, chest, e.Cursor.ScreenPixels);
+            }
         }
 
         private void OnLabelButtonClicked(string currentLabel)
@@ -74,6 +74,15 @@ namespace LabelChest
             var (chest, menu) = GetCurrentChestMenu();
             if (chest == null || menu == null) 
                 return;
+
+            // Add button to menu components if not already added
+            if (!menu.allClickableComponents.Contains(_menuButton))
+            {
+                menu.allClickableComponents.Add(_menuButton);
+                
+                // Setup neighbors for proper controller navigation
+                _menuButton.SetupNeighbors(menu);
+            }
 
             _menuButton.Draw(e.SpriteBatch, menu, chest);
         }
