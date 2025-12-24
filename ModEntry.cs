@@ -47,8 +47,14 @@ namespace LabelChest
             if (chest == null || menu == null) 
                 return;
 
-            // Check if label button was clicked via mouse or controller action button
-            if (e.Button.IsActionButton())
+            /* Check if label button was clicked via mouse or controller use 
+            tool button and action button.
+            These two methods can detect click without knowing how the game binds
+            the keys.
+            In default, the left-click is "UseToolButton" and right-click is
+            "ActionButton" for mouse.
+            */
+            if (e.Button.IsUseToolButton() || e.Button.IsActionButton())
             {
                 _menuButton.HandleClick(menu, chest, e.Cursor.ScreenPixels);
             }
