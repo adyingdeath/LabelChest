@@ -51,7 +51,9 @@ namespace LabelChest {
             "ActionButton" for mouse.
             */
             if (e.Button.IsUseToolButton() || e.Button.IsActionButton()) {
-                _menuButton.HandleClick(menu, chest, e.Cursor.ScreenPixels);
+                // Fix for UI Scale: Convert screen pixels to UI coordinates
+                Vector2 cursorPosition = Utility.ModifyCoordinatesForUIScale(e.Cursor.ScreenPixels);
+                _menuButton.HandleClick(menu, chest, cursorPosition);
             }
         }
 
