@@ -13,6 +13,7 @@ using LabelChest.Rendering;
 
 namespace LabelChest {
     public class ModEntry : Mod {
+        public static readonly string MAIN_TEXTURE_PATH = "adyingdeath/LabelChest/Texture";
         private LabelCacheManager _cacheManager = null!;
         private MenuLabelButton _menuButton = null!;
         private WorldLabelRenderer _worldRenderer = null!;
@@ -28,10 +29,23 @@ namespace LabelChest {
             helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.Content.AssetRequested += OnAssetRequested;
 
             // Cleanup cache on load/exit to free VRAM
             helper.Events.GameLoop.SaveLoaded += OnCleanupCache;
             helper.Events.GameLoop.ReturnedToTitle += OnCleanupCache;
+        }
+
+        private void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
+            // The main texture png asset for this mod.
+            if (e.NameWithoutLocale.IsEquivalentTo(MAIN_TEXTURE_PATH)) {
+                e.LoadFrom(() => {
+                    // The asset will be cached.
+                    string path = Path.Combine(Helper.DirectoryPath, "assets", "texture.png");
+                    using var stream = File.OpenRead(path);
+                    return Texture2D.FromStream(Game1.graphics.GraphicsDevice, stream);
+                }, AssetLoadPriority.Exclusive);
+            }
         }
 
         private void OnCleanupCache(object? sender, EventArgs e) {
