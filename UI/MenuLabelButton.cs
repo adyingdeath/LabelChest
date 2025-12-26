@@ -182,6 +182,9 @@ namespace LabelChest.UI {
             );
             float alpha = isHover ? 0.5f : 1f;
             b.DrawString(Game1.smallFont, labelText, textPos, Game1.textColor * alpha);
+            if (isHover) {
+                IClickableMenu.drawHoverText(b, labelText, Game1.smallFont);
+            }
 
             // Redraw mouse cursor
             menu.drawMouse(b);
