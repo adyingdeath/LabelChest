@@ -101,6 +101,8 @@ namespace LabelChest.Managers {
             /* [TODO]: For slots in the first row of the inventory, the 
             upNeighbor is currently set to menuLabelButton. This is incorrect — 
             it should point to the slot directly above it in the chest instead. 
+            [TODO]: The chest menu in Android is different from the one in PC, so
+            slots in the first row of chest have wrong neighbors calculation.
             */
             foreach (var component in menu.allClickableComponents) {
                 if (component == menuLabelButton || component == configButton) continue;
