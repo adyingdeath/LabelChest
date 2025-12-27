@@ -16,12 +16,16 @@ namespace LabelChest {
         public static readonly string MAIN_TEXTURE_PATH = "adyingdeath/LabelChest/Texture";
         private LabelCacheManager _cacheManager = null!;
         private MenuLabelButton _menuButton = null!;
+        private ConfigButton _configButton = null!;
+        private ChestMenuButtonManager _chestMenuButtonManager = null!;
         private WorldLabelRenderer _worldRenderer = null!;
 
         public override void Entry(IModHelper helper) {
             // Initialize managers
             _cacheManager = new LabelCacheManager(helper.Translation.LocaleEnum);
             _menuButton = new MenuLabelButton(Helper.Translation, OnLabelButtonClicked);
+            _configButton = new ConfigButton(Helper.Translation, OnConfigButtonClicked);
+            _chestMenuButtonManager = new ChestMenuButtonManager(_menuButton, _configButton);
             _worldRenderer = new WorldLabelRenderer(_cacheManager);
 
             // Register events
@@ -67,7 +71,16 @@ namespace LabelChest {
             if (e.Button.IsUseToolButton() || e.Button.IsActionButton()) {
                 // Fix for UI Scale: Convert screen pixels to UI coordinates
                 Vector2 cursorPosition = Utility.ModifyCoordinatesForUIScale(e.Cursor.ScreenPixels);
-                _menuButton.HandleClick(menu, chest, cursorPosition);
+                
+                // Handle config button click first (since it's to the right)
+                if (_configButton.HandleClick(menu, cursorPosition)) {
+                    return;
+                }
+                
+                // Then handle label button click
+                if (_menuButton.HandleClick(menu, chest, cursorPosition)) {
+                    return;
+                }
             }
         }
 
@@ -93,20 +106,35 @@ namespace LabelChest {
             );
         }
 
+        private void OnConfigButtonClicked() {
+            // TODO: Open config menu
+            Helper.Input.Suppress(SButton.MouseLeft);
+            Game1.addHUDMessage(new HUDMessage("Config button clicked!", 2));
+        }
+
         private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e) {
             var (chest, menu) = GetCurrentChestMenu();
             if (chest == null || menu == null)
                 return;
 
-            // Add button to menu components if not already added
+            // Add buttons to menu components if not already added
             if (!menu.allClickableComponents.Contains(_menuButton)) {
                 menu.allClickableComponents.Add(_menuButton);
-
-                // Setup neighbors for proper controller navigation
-                _menuButton.SetupNeighbors(menu);
+            }
+            if (!menu.allClickableComponents.Contains(_configButton)) {
+                menu.allClickableComponents.Add(_configButton);
             }
 
+            // Update bounds for both buttons
+            (_menuButton.bounds, _configButton.bounds) = _chestMenuButtonManager.GetButtonGroupBounds(menu);
+            
+            // Setup neighbors for proper controller navigation
+            _chestMenuButtonManager.SetupNeighbors(menu);
+            _chestMenuButtonManager.UpdateOtherComponentsNeighbors(menu);
+
+            // Draw both buttons
             _menuButton.Draw(e.SpriteBatch, menu, chest);
+            _configButton.Draw(e.SpriteBatch, menu);
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e) {
