@@ -1,5 +1,6 @@
 using LabelChest.UI;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley.Menus;
 
 namespace LabelChest.Managers {
@@ -28,6 +29,12 @@ namespace LabelChest.Managers {
                     _ => 24,
                 }
             );
+            
+            /* Android specific: adjust the buttons' positions so that players 
+            can see and click buttons*/
+            if (Constants.TargetPlatform == GamePlatform.Android) {
+                y = 0;
+            }
 
             return (
                 new Rectangle(x, y, totalWidth - ButtonGroupHeight, ButtonGroupHeight),
