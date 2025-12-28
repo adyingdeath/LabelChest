@@ -13,6 +13,7 @@ public class ConfigDropDown : OptionsDropDown {
     public ConfigDropDown AddOption(string value, string displayName) {
         dropDownOptions.Add(value);
         dropDownDisplayOptions.Add(displayName);
+        RecalculateBounds();
         return this;
     }
     // Override events so we can listen to them
