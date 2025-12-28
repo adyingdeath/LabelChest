@@ -44,6 +44,10 @@ namespace LabelChest {
             helper.Events.GameLoop.ReturnedToTitle += OnCleanupCache;
         }
 
+        public static void Log(string message) {
+            Game1.chatBox.addMessage(message, Color.White);
+        }
+
         private void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
             // The main texture png asset for this mod.
             if (e.NameWithoutLocale.IsEquivalentTo(MAIN_TEXTURE_PATH)) {
