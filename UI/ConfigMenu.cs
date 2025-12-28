@@ -1,4 +1,5 @@
 using LabelChest.UI.Components;
+using LabelChest.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -14,10 +15,15 @@ public class ConfigMenu : OptionsPage {
     private const int PADDING_Y = 20;
     private const int SPACE_Y = 8;
     private const int PREVIEW_WIDTH = 200;
+    private Debouncer debouncer = new Debouncer(TimeSpan.FromMilliseconds(50), () => {
+        ModEntry.CacheManager.ClearCache();
+    });
     public ConfigMenu() : base(MARGIN_X, MARGIN_Y, Game1.viewport.Width - MARGIN_X * 2, Game1.viewport.Height - MARGIN_Y * 2) {
         options = new List<OptionsElement> {
             new ConfigSlider("Font Size", (value) => {
+                if (ModEntry.Config.FontSize == value) return;
                 ModEntry.Config.FontSize = value;
+                debouncer.Invoke();
             }).Min(0.2f).Max(3.0f).DefaultValue(1.0f),
         };
 

@@ -17,7 +17,7 @@ namespace LabelChest.Managers {
         private float BaseFontScale = 0.8f;
         private float FontScale = 0.8f;
         private const int WorldMaxWidth = 70;
-        private const int Padding = 4;
+        private const int Padding = 20;
 
         public LabelCacheManager(LocalizedContentManager.LanguageCode languageCode) {
             BaseFontScale = languageCode switch {
