@@ -14,13 +14,17 @@ using LabelChest.Rendering;
 namespace LabelChest {
     public class ModEntry : Mod {
         public static readonly string MAIN_TEXTURE_PATH = "adyingdeath/LabelChest/Texture";
-        private LabelCacheManager _cacheManager = null!;
+        public static ModConfig Config { get; private set; } = null!;
+        public static LabelCacheManager _cacheManager = null!;
         private MenuLabelButton _menuButton = null!;
         private ConfigButton _configButton = null!;
         private ChestMenuButtonManager _chestMenuButtonManager = null!;
         private WorldLabelRenderer _worldRenderer = null!;
 
         public override void Entry(IModHelper helper) {
+            // Load configuration
+            Config = Helper.ReadConfig<ModConfig>();
+
             // Initialize managers
             _cacheManager = new LabelCacheManager(helper.Translation.LocaleEnum);
             _menuButton = new MenuLabelButton(Helper.Translation, OnLabelButtonClicked);
@@ -107,9 +111,8 @@ namespace LabelChest {
         }
 
         private void OnConfigButtonClicked() {
-            // TODO: Open config menu
             Helper.Input.Suppress(SButton.MouseLeft);
-            Game1.addHUDMessage(new HUDMessage("Config button clicked!", 2));
+            Game1.activeClickableMenu = new ConfigMenu();
         }
 
         private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e) {

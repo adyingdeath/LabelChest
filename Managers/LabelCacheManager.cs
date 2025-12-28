@@ -14,15 +14,17 @@ namespace LabelChest.Managers {
         private SpriteBatch? _spriteBatch;
 
         // Configuration constants
-        private float WorldFontScale = 0.8f;
+        private float BaseFontScale = 0.8f;
+        private float FontScale = 0.8f;
         private const int WorldMaxWidth = 70;
         private const int Padding = 4;
 
         public LabelCacheManager(LocalizedContentManager.LanguageCode languageCode) {
-            WorldFontScale = languageCode switch {
+            BaseFontScale = languageCode switch {
                 LocalizedContentManager.LanguageCode.en => 0.65f,
                 _ => 0.85f
             };
+            FontScale = BaseFontScale * ModEntry.Config.FontSize;
         }
 
         /// <summary>
@@ -72,9 +74,11 @@ namespace LabelChest.Managers {
         /// Generates a texture for a label text with proper formatting.
         /// </summary>
         private void GenerateLabelTexture(GraphicsDevice device, string text) {
+            FontScale = BaseFontScale * ModEntry.Config.FontSize;
+
             SpriteFont font = Game1.smallFont;
             List<string> lines = TextUtils.WrapText(
-                font, text, WorldMaxWidth / WorldFontScale,
+                font, text, WorldMaxWidth / FontScale,
                 out Vector2 textBoxSize
             );
 
@@ -102,7 +106,7 @@ namespace LabelChest.Managers {
 
             float currentY = Padding;
             foreach (string line in lines) {
-                Vector2 lineSize = font.MeasureString(line) * WorldFontScale;
+                Vector2 lineSize = font.MeasureString(line) * FontScale;
                 float x = (width - lineSize.X) / 2f;
                 Vector2 pos = new Vector2(x, currentY);
 
@@ -110,9 +114,9 @@ namespace LabelChest.Managers {
                 DrawTextOutline(font, line, pos);
 
                 // Draw text
-                _spriteBatch.DrawString(font, line, pos, Color.White, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
+                _spriteBatch.DrawString(font, line, pos, Color.White, 0f, Vector2.Zero, FontScale, SpriteEffects.None, 1f);
 
-                currentY += font.MeasureString(line).Y * WorldFontScale;
+                currentY += font.MeasureString(line).Y * FontScale;
             }
 
             _spriteBatch.End();
@@ -127,7 +131,7 @@ namespace LabelChest.Managers {
                 for (float radius = offset; radius >= 0; radius -= 0.25f) {
                     float x = (float)(Math.Cos(theta) * radius);
                     float y = (float)(Math.Sin(theta) * radius);
-                    _spriteBatch!.DrawString(font, text, position + new Vector2(x, y), Color.Black, 0f, Vector2.Zero, WorldFontScale, SpriteEffects.None, 1f);
+                    _spriteBatch!.DrawString(font, text, position + new Vector2(x, y), Color.Black, 0f, Vector2.Zero, FontScale, SpriteEffects.None, 1f);
                 }
             }
         }
