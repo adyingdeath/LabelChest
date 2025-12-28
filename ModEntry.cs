@@ -13,24 +13,24 @@ using LabelChest.Rendering;
 
 namespace LabelChest {
     public class ModEntry : Mod {
-        public static readonly string MAIN_TEXTURE_PATH = "adyingdeath/LabelChest/Texture";
+        public const string MAIN_TEXTURE_PATH = "adyingdeath/LabelChest/Texture";
         public static ModConfig Config { get; private set; } = null!;
-        public static LabelCacheManager _cacheManager = null!;
+        public static LabelCacheManager CacheManager { get; private set; } = null!;
         private MenuLabelButton _menuButton = null!;
         private ConfigButton _configButton = null!;
         private ChestMenuButtonManager _chestMenuButtonManager = null!;
-        private WorldLabelRenderer _worldRenderer = null!;
+        public static WorldLabelRenderer WorldLabelRenderer { get; private set; } = null!;
 
         public override void Entry(IModHelper helper) {
             // Load configuration
             Config = Helper.ReadConfig<ModConfig>();
 
             // Initialize managers
-            _cacheManager = new LabelCacheManager(helper.Translation.LocaleEnum);
+            CacheManager = new LabelCacheManager(helper.Translation.LocaleEnum);
             _menuButton = new MenuLabelButton(Helper.Translation, OnLabelButtonClicked);
             _configButton = new ConfigButton(Helper.Translation, OnConfigButtonClicked);
             _chestMenuButtonManager = new ChestMenuButtonManager(_menuButton, _configButton);
-            _worldRenderer = new WorldLabelRenderer(_cacheManager);
+            WorldLabelRenderer = new WorldLabelRenderer(CacheManager);
 
             // Register events
             helper.Events.Display.RenderedWorld += OnRenderedWorld;
@@ -61,7 +61,7 @@ namespace LabelChest {
         }
 
         private void OnCleanupCache(object? sender, EventArgs e) {
-            _cacheManager.ClearCache();
+            CacheManager.ClearCache();
         }
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e) {
@@ -145,7 +145,7 @@ namespace LabelChest {
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e) {
-            _cacheManager.ProcessPendingLabels(Game1.graphics.GraphicsDevice);
+            CacheManager.ProcessPendingLabels(Game1.graphics.GraphicsDevice);
         }
 
         private void OnRenderedWorld(object? sender, RenderedWorldEventArgs e) {
@@ -156,7 +156,7 @@ namespace LabelChest {
                 if (pair.Value is Chest chest && ChestLabelManager.HasLabel(chest)) {
                     string labelText = ChestLabelManager.GetLabel(chest);
                     if (!string.IsNullOrWhiteSpace(labelText)) {
-                        _worldRenderer.DrawLabel(e.SpriteBatch, pair.Key, labelText);
+                        WorldLabelRenderer.DrawLabelWithTile(e.SpriteBatch, pair.Key, labelText);
                     }
                 }
             }
@@ -173,7 +173,7 @@ namespace LabelChest {
 
         protected override void Dispose(bool disposing) {
             if (disposing) {
-                _cacheManager?.Dispose();
+                CacheManager?.Dispose();
             }
             base.Dispose(disposing);
         }

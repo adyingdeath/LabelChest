@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Objects;
 
 namespace LabelChest.UI;
 
@@ -15,24 +16,10 @@ public class ConfigMenu : OptionsPage {
     private const int PREVIEW_WIDTH = 200;
     public ConfigMenu() : base(MARGIN_X, MARGIN_Y, Game1.viewport.Width - MARGIN_X * 2, Game1.viewport.Height - MARGIN_Y * 2) {
         options = new List<OptionsElement> {
-            new ConfigSlider("Test", (value) => {
-                ModEntry.Log($"{value}");
-            }),
-            new ConfigCheckbox("Show Portraits", (value) => {
-                ModEntry.Log($"{value}");
-            }),
-            new ConfigDropDown("Gamepad Mode", (value) => {
-                ModEntry.Log($"{value}");
-            }).AddOption("Test-value", "Test")
-            .AddOption("Jungle-value", "Jungle")
+            new ConfigSlider("Font Size", (value) => {
+                ModEntry.Config.FontSize = value;
+            }).Min(0.2f).Max(3.0f).DefaultValue(1.0f),
         };
-
-        for (int i = 0;i < 30;i++) {
-            int current = i;
-            options.Add(new ConfigCheckbox($"Checkbox {i}", (value) => {
-                ModEntry.Log($"{current}: {value}");
-            }));
-        }
 
         optionSlots.Clear();
         for (int i = 0; i < 7; i++) {
@@ -70,6 +57,17 @@ public class ConfigMenu : OptionsPage {
             4f
         );
 
+        // Draw the preview chest
+        Chest chest = new Chest(true);
+        float chestWidth = PREVIEW_WIDTH / 3;
+        float chestScale = chestWidth / 32f;
+        Vector2 chestPos = new Vector2(
+            MARGIN_X + PADDING_X + PREVIEW_WIDTH / 2 - chestWidth / 2,
+            MARGIN_Y + height / 2 - chestWidth / 2
+        );
+        chest.drawInMenu(b, chestPos, chestScale);
+        ModEntry.WorldLabelRenderer.DrawLabel(b, chestPos + new Vector2(chestWidth / 2), "example");
+        
         // Draw options
         base.draw(b);
 
