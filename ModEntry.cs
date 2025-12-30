@@ -136,7 +136,7 @@ namespace LabelChest {
             (_menuButton.bounds, _configButton.bounds) = _chestMenuButtonManager.GetButtonGroupBounds(menu);
             
             // Setup neighbors for proper controller navigation
-            _chestMenuButtonManager.SetupNeighbors(menu);
+            _chestMenuButtonManager.SetupNeighbors();
             _chestMenuButtonManager.UpdateOtherComponentsNeighbors(menu);
 
             // Draw both buttons

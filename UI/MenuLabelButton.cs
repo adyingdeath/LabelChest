@@ -26,13 +26,11 @@ namespace LabelChest.UI {
 
         /// <summary>Draws the label button in the chest menu.</summary>
         public void Draw(SpriteBatch b, ItemGrabMenu menu, Chest chest) {
-            Texture2D setLabelButton = Game1.content.Load<Texture2D>(ModEntry.MAIN_TEXTURE_PATH);
-
             // Draw button background
             IClickableMenu.drawTextureBox(
                 b,
-                setLabelButton,
-                new Rectangle(0, 0, 60, 60),
+                Game1.menuTexture,
+                new Rectangle(0, 256, 60, 60),
                 bounds.X,
                 bounds.Y,
                 bounds.Width,

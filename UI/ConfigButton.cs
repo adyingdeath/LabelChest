@@ -32,24 +32,25 @@ namespace LabelChest.UI {
             );
 
             // Draw config button icon
-            b.Draw(
-                texture,
-                new Vector2(bounds.X, bounds.Y),
-                new Rectangle(64, 0, 60, 60),
+            IClickableMenu.drawTextureBox(
+                b,
+                Game1.menuTexture,
+                new Rectangle(0, 256, 60, 60),
+                bounds.X,
+                bounds.Y,
+                bounds.Width,
+                bounds.Height,
                 Color.White,
-                0f,
-                Vector2.Zero,
-                bounds.Height / 60.0f,
-                SpriteEffects.None,
-                1.0f
+                1f,
+                false
             );
 
             // Draw gear icon overlay
             b.Draw(
                 texture,
                 new Vector2(bounds.X, bounds.Y),
-                new Rectangle(128, 0, 60, 60),
-                Color.White * (isHover ? 0.8f : 1.0f),
+                new Rectangle(0, 0, 60, 60),
+                Color.White * (isHover ? 0.5f : 1.0f),
                 0f,
                 Vector2.Zero,
                 bounds.Height / 60.0f,
