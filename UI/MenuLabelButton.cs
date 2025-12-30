@@ -21,7 +21,7 @@ namespace LabelChest.UI {
             : base(Rectangle.Empty, ButtonName) {
             _translations = translations;
             _onLabelSet = onLabelSet;
-            this.myID = 99910524;
+            this.myID = 9876543;
         }
 
         /// <summary>Draws the label button in the chest menu.</summary>

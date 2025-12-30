@@ -45,49 +45,12 @@ namespace LabelChest.Managers {
         /// <summary>
         /// Sets this button's own up and down neighbors.
         /// </summary>
-        public void SetupNeighbors(ItemGrabMenu menu) {
-            ClickableComponent? closestAbove = null;
-            ClickableComponent? closestBelow = null;
-
-            foreach (var component in menu.allClickableComponents) {
-                if (component == menuLabelButton || component == configButton) continue;
-
-                // Check for up neighbor (component above the button)
-                if (component.bounds.Bottom <= menuLabelButton.bounds.Top) {
-                    if (closestAbove == null
-                        || component.bounds.Bottom > closestAbove.bounds.Bottom
-                        || (
-                            component.bounds.Bottom == closestAbove.bounds.Bottom
-                            && component.bounds.Left < closestAbove.bounds.Left
-                            )
-                        ) {
-                        closestAbove = component;
-                    }
-                }
-
-                // Check for down neighbor (component below the button)
-                if (component.bounds.Top >= menuLabelButton.bounds.Bottom) {
-                    if (closestBelow == null
-                        || component.bounds.Top < closestBelow.bounds.Top
-                        || (
-                            component.bounds.Top == closestBelow.bounds.Top
-                            && component.bounds.Left < closestBelow.bounds.Left
-                            )
-                        ) {
-                        closestBelow = component;
-                    }
-                }
-            }
-
-            if (closestAbove != null) {
-                menuLabelButton.upNeighborID = closestAbove.myID;
-                configButton.upNeighborID = closestAbove.myID;
-            }
-
-            if (closestBelow != null) {
-                menuLabelButton.downNeighborID = closestBelow.myID;
-                configButton.downNeighborID = closestBelow.myID;
-            }
+        public void SetupNeighbors() {
+            // Fixed up/down neighbors
+            menuLabelButton.upNeighborID = 4343;
+            menuLabelButton.downNeighborID = 53910;
+            configButton.upNeighborID = 4343;
+            configButton.downNeighborID = 53910;
 
             // Set buttons in our group to neighbour each others
             menuLabelButton.rightNeighborID = configButton.myID;
@@ -98,31 +61,16 @@ namespace LabelChest.Managers {
         /// Updates up/down neighbors for other components to include this button.
         /// </summary>
         public void UpdateOtherComponentsNeighbors(ItemGrabMenu menu) {
-            /* [TODO]: For slots in the first row of the inventory, the 
-            upNeighbor is currently set to menuLabelButton. This is incorrect — 
-            it should point to the slot directly above it in the chest instead. 
-            [TODO]: The chest menu in Android is different from the one in PC, so
-            slots in the first row of chest have wrong neighbors calculation.
+            /* [TODO]: The chest menu in Android is different from the one in PC,
+            so slots in the first row of chest have wrong neighbors calculation.
             */
-            foreach (var component in menu.allClickableComponents) {
-                if (component == menuLabelButton || component == configButton) continue;
-
-                // Rule 1: If component is below the button and its up neighbor is above the button
-                if (component.bounds.Bottom >= menuLabelButton.bounds.Top) {
-                    var currentUpNeighbor = FindComponentByID(menu, component.upNeighborID);
-                    if (currentUpNeighbor == null || currentUpNeighbor.bounds.Top <= menuLabelButton.bounds.Bottom) {
-                        component.upNeighborID = menuLabelButton.myID;
-                    }
+            menu.allClickableComponents.ForEach((component) => {
+                if (53910 <= component.myID && component.myID <= 53923) {
+                    component.upNeighborID = menuLabelButton.myID;
+                } else if (4343 <= component.myID && component.myID <= 4363) {
+                    component.downNeighborID = menuLabelButton.myID;
                 }
-
-                // Rule 2: If component is above the button and its down neighbor is below the button
-                if (component.bounds.Top <= menuLabelButton.bounds.Bottom) {
-                    var currentDownNeighbor = FindComponentByID(menu, component.downNeighborID);
-                    if (currentDownNeighbor == null || currentDownNeighbor.bounds.Bottom >= menuLabelButton.bounds.Top) {
-                        component.downNeighborID = menuLabelButton.myID;
-                    }
-                }
-            }
+            });
         }
 
         /// <summary>
