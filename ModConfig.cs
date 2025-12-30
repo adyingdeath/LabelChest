@@ -1,4 +1,12 @@
+using System.Drawing;
+
 namespace LabelChest {
+    public enum TextColorType {
+        Fixed,
+        Inverted,
+        FollowBox
+    }
+
     /// <summary>
     /// Configuration class for the LabelChest mod.
     /// </summary>
@@ -8,12 +16,22 @@ namespace LabelChest {
         /// Final scale = FontSize * WorldFontScale.
         /// </summary>
         public float FontSize { get; set; } = 1.0f;
+        public TextColorType TextColorType { get; set; } = TextColorType.Fixed;
+        /// <summary>
+        /// Text color. Default is white.
+        /// Value can be:
+        /// 1. Color object
+        /// 2. {}
+        /// </summary>
+        public Color TextColor { get; set; } = Color.White;
 
         /// <summary>
         /// Resets the configuration to default values.
         /// </summary>
         public void ResetToDefaults() {
             FontSize = 1.0f;
+            TextColorType = TextColorType.Fixed;
+            TextColor = Color.White;
         }
     }
 }

@@ -8,24 +8,134 @@ using StardewValley.Objects;
 
 namespace LabelChest.UI;
 
+class OptionsManager {
+    public List<OptionsElement> options = new();
+    public List<string> optionsTag = new();
+    public Dictionary<string, bool> tagVisibility = new();
+    private Action<List<OptionsElement>> onVisibleOptionsChanged;
+
+    public OptionsManager(Action<List<OptionsElement>> updateAction) {
+        onVisibleOptionsChanged = updateAction;
+    }
+
+    public void SetUpdateCallback(Action<List<OptionsElement>> updateAction) {
+        onVisibleOptionsChanged = updateAction;
+    }
+
+    private void TriggerUpdate() {
+        if (onVisibleOptionsChanged != null) {
+            onVisibleOptionsChanged(GetVisibleOptions());
+        }
+    }
+
+    public OptionsManager Add(OptionsElement option, string tag) {
+        options.Add(option);
+        optionsTag.Add(tag);
+        if (!tagVisibility.ContainsKey(tag)) {
+            tagVisibility[tag] = true;
+        }
+        TriggerUpdate();
+        return this;
+    }
+
+    public void Display(string tag) {
+        if (!tagVisibility.ContainsKey(tag)) return;
+        tagVisibility[tag] = true;
+        TriggerUpdate();
+    }
+
+    public void Display(List<string> tag) {
+        bool changed = false;
+        tag.ForEach((t) => {
+            if (!tagVisibility.ContainsKey(t)) return;
+            if (!tagVisibility[t]) {
+                tagVisibility[t] = true;
+                changed = true;
+            }
+        });
+        if (changed) TriggerUpdate();
+    }
+
+    public void Hide(string tag) {
+        if (!tagVisibility.ContainsKey(tag)) return;
+        tagVisibility[tag] = false;
+        TriggerUpdate();
+    }
+
+    public void Hide(List<string> tag) {
+        bool changed = false;
+        tag.ForEach((t) => {
+            if (!tagVisibility.ContainsKey(t)) return;
+            if (tagVisibility[t]) {
+                tagVisibility[t] = false;
+                changed = true;
+            }
+        });
+        if (changed) TriggerUpdate();
+    }
+
+    public bool IsVisible(string tag) {
+        if (!tagVisibility.ContainsKey(tag)) return false;
+        return tagVisibility[tag];
+    }
+
+    public bool IsVisible(int tagIndex) {
+        string tag = optionsTag[tagIndex];
+        if (!tagVisibility.ContainsKey(tag)) return false;
+        return tagVisibility[tag];
+    }
+
+    public List<OptionsElement> GetVisibleOptions() {
+        return options.Where((option, index) => IsVisible(index)).ToList();
+    }
+}
+
 public class ConfigMenu : OptionsPage {
-    private const int MARGIN_X = 100;
-    private const int MARGIN_Y = 100;
+    private const int WIDTH = 900;
+    private const int HEIGHT = 600;
     private const int PADDING_X = 20;
     private const int PADDING_Y = 20;
     private const int SPACE_Y = 8;
-    private const int PREVIEW_WIDTH = 200;
+    private const int PREVIEW_WIDTH = 100;
     private Debouncer debouncer = new Debouncer(TimeSpan.FromMilliseconds(50), () => {
         ModEntry.CacheManager.ClearCache();
     });
-    public ConfigMenu() : base(MARGIN_X, MARGIN_Y, Game1.viewport.Width - MARGIN_X * 2, Game1.viewport.Height - MARGIN_Y * 2) {
-        options = new List<OptionsElement> {
+    private readonly OptionsManager optionsManager;
+    public ConfigMenu() : base((Game1.viewport.Width - WIDTH) / 2, (Game1.viewport.Height - HEIGHT) / 2, WIDTH, HEIGHT) {
+        optionsManager = new((options) => {
+            this.options = options;
+        });
+
+        optionsManager
+        .Add(
+            // Font Size
             new ConfigSlider("Font Size", (value) => {
                 if (ModEntry.Config.FontSize == value) return;
                 ModEntry.Config.FontSize = value;
                 debouncer.Invoke();
-            }).Min(0.2f).Max(3.0f).DefaultValue(1.0f),
-        };
+            }).Min(0.2f).Max(3.0f).DefaultValue(ModEntry.Config.FontSize),
+            "default"
+        )
+        .Add(
+            // Text Color Type
+            new ConfigDropDown("Text Color Type", (value) => {
+                if (value == "Fixed") {
+                    optionsManager.Display("text-color-fixed");
+                } else {
+                    optionsManager.Hide("text-color-fixed");
+                }
+            }).AddOption("Fixed", "Fixed color")
+            .AddOption("Inverted", "Inverse of box")
+            .AddOption("FollowBox", "Same as box"),
+            "default"
+        )
+        .Add(
+            // Text Color Type
+            new ConfigSlider("fixed", (value) => {}),
+            "text-color-fixed"
+        )
+        ;
+        options = optionsManager.GetVisibleOptions();
 
         optionSlots.Clear();
         for (int i = 0; i < 7; i++) {
@@ -33,7 +143,7 @@ public class ConfigMenu : OptionsPage {
                 new Rectangle(
                     xPositionOnScreen + PADDING_X + PREVIEW_WIDTH,
                     yPositionOnScreen + PADDING_Y + i * ((height - 2 * PADDING_Y - 6 * SPACE_Y) / 7) + SPACE_Y * Math.Max(0, i - 0),
-                    width - 2 * MARGIN_X - 2 * PADDING_X - PREVIEW_WIDTH,
+                    width - 2 * xPositionOnScreen - 2 * PADDING_X - PREVIEW_WIDTH,
                     (height - 2 * PADDING_Y - 6 * SPACE_Y) / 7
                 ),
                 i.ToString() ?? ""
@@ -55,8 +165,8 @@ public class ConfigMenu : OptionsPage {
             b,
             Game1.mouseCursors,
             new Rectangle(384, 373, 18, 18),
-            MARGIN_X,
-            MARGIN_Y,
+            xPositionOnScreen,
+            yPositionOnScreen,
             width,
             height,
             Color.White,
@@ -65,15 +175,15 @@ public class ConfigMenu : OptionsPage {
 
         // Draw the preview chest
         Chest chest = new Chest(true);
-        float chestWidth = PREVIEW_WIDTH / 3;
+        float chestWidth = 64f;
         float chestScale = chestWidth / 32f;
         Vector2 chestPos = new Vector2(
-            MARGIN_X + PADDING_X + PREVIEW_WIDTH / 2 - chestWidth / 2,
-            MARGIN_Y + height / 2 - chestWidth / 2
+            xPositionOnScreen + PADDING_X + PREVIEW_WIDTH / 2 - chestWidth / 2,
+            yPositionOnScreen + height / 2 - chestWidth / 2
         );
         chest.drawInMenu(b, chestPos, chestScale);
         ModEntry.WorldLabelRenderer.DrawLabel(b, chestPos + new Vector2(chestWidth / 2), "example");
-        
+
         // Draw options
         base.draw(b);
 
