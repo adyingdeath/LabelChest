@@ -25,7 +25,7 @@ namespace LabelChest.UI {
             : base(Rectangle.Empty, ButtonName) {
             _translations = translations;
             _onLabelSet = onLabelSet;
-            this.myID = 99910524;
+            this.myID = 9876543;
         }
 
         /// <summary>
@@ -44,6 +44,10 @@ namespace LabelChest.UI {
                 }
             );
 
+            if (Constants.TargetPlatform == GamePlatform.Android) {
+                y = 0;
+            }
+
             this.bounds = new Rectangle(x, y, width, ButtonHeight);
         }
 
@@ -60,7 +64,7 @@ namespace LabelChest.UI {
             this.rightNeighborID = -1;
 
             // First, set this button's neighbors
-            SetButtonNeighbors(menu);
+            SetButtonNeighbors();
 
             // Then update neighbors for other components
             UpdateOtherComponentsNeighbors(menu);
@@ -70,72 +74,22 @@ namespace LabelChest.UI {
         /// <summary>
         /// Sets this button's own up and down neighbors.
         /// </summary>
-        private void SetButtonNeighbors(ItemGrabMenu menu) {
-            ClickableComponent? closestAbove = null;
-            ClickableComponent? closestBelow = null;
-
-            foreach (var component in menu.allClickableComponents) {
-                if (component == this) continue;
-
-                // Check for up neighbor (component above the button)
-                if (component.bounds.Bottom <= this.bounds.Top) {
-                    if (closestAbove == null
-                        || component.bounds.Bottom > closestAbove.bounds.Bottom
-                        || (
-                            component.bounds.Bottom == closestAbove.bounds.Bottom
-                            && component.bounds.Left < closestAbove.bounds.Left
-                            )
-                        ) {
-                        closestAbove = component;
-                    }
-                }
-
-                // Check for down neighbor (component below the button)
-                if (component.bounds.Top >= this.bounds.Bottom) {
-                    if (closestBelow == null
-                        || component.bounds.Top < closestBelow.bounds.Top
-                        || (
-                            component.bounds.Top == closestBelow.bounds.Top
-                            && component.bounds.Left < closestBelow.bounds.Left
-                            )
-                        ) {
-                        closestBelow = component;
-                    }
-                }
-            }
-
-            if (closestAbove != null) {
-                this.upNeighborID = closestAbove.myID;
-            }
-
-            if (closestBelow != null) {
-                this.downNeighborID = closestBelow.myID;
-            }
+        private void SetButtonNeighbors() {
+            upNeighborID = 4343;
+            downNeighborID = 53910;
         }
 
         /// <summary>
         /// Updates up/down neighbors for other components to include this button.
         /// </summary>
         private void UpdateOtherComponentsNeighbors(ItemGrabMenu menu) {
-            foreach (var component in menu.allClickableComponents) {
-                if (component == this) continue;
-
-                // Rule 1: If component is below the button and its up neighbor is above the button
-                if (component.bounds.Bottom >= this.bounds.Top) {
-                    var currentUpNeighbor = FindComponentByID(menu, component.upNeighborID);
-                    if (currentUpNeighbor == null || currentUpNeighbor.bounds.Top <= this.bounds.Bottom) {
-                        component.upNeighborID = this.myID;
-                    }
+            menu.allClickableComponents.ForEach((component) => {
+                if (53910 <= component.myID && component.myID <= 53923) {
+                    component.upNeighborID = myID;
+                } else if (4343 <= component.myID && component.myID <= 4363) {
+                    component.downNeighborID = myID;
                 }
-
-                // Rule 2: If component is above the button and its down neighbor is below the button
-                if (component.bounds.Top <= this.bounds.Bottom) {
-                    var currentDownNeighbor = FindComponentByID(menu, component.downNeighborID);
-                    if (currentDownNeighbor == null || currentDownNeighbor.bounds.Bottom >= this.bounds.Top) {
-                        component.downNeighborID = this.myID;
-                    }
-                }
-            }
+            });
         }
 
         /// <summary>
