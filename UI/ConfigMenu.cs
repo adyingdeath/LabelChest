@@ -131,7 +131,32 @@ public class ConfigMenu : OptionsPage {
         )
         .Add(
             // Text Color Type
-            new ConfigSlider("fixed", (value) => {}),
+            new ConfigSlider("Red", (value) => {
+                Color color = ModEntry.Config.TextColor;
+                color.R = (byte)value;
+                ModEntry.Config.TextColor = color;
+                debouncer.Invoke();
+            }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.R),
+            "text-color-fixed"
+        )
+        .Add(
+            // Text Color Type
+            new ConfigSlider("Green", (value) => {
+                Color color = ModEntry.Config.TextColor;
+                color.G = (byte)value;
+                ModEntry.Config.TextColor = color;
+                debouncer.Invoke();
+            }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.G),
+            "text-color-fixed"
+        )
+        .Add(
+            // Text Color Type
+            new ConfigSlider("Blue", (value) => {
+                Color color = ModEntry.Config.TextColor;
+                color.B = (byte)value;
+                ModEntry.Config.TextColor = color;
+                debouncer.Invoke();
+            }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.B),
             "text-color-fixed"
         )
         ;

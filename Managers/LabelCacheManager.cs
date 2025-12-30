@@ -114,7 +114,13 @@ namespace LabelChest.Managers {
                 DrawTextOutline(font, line, pos);
 
                 // Draw text
-                _spriteBatch.DrawString(font, line, pos, Color.White, 0f, Vector2.Zero, FontScale, SpriteEffects.None, 1f);
+                Color textColor = ModEntry.Config.TextColorType switch {
+                    TextColorType.Fixed => ModEntry.Config.TextColor,
+                    TextColorType.Inverted => throw new NotImplementedException(),
+                    TextColorType.FollowBox => throw new NotImplementedException(),
+                    _ => Color.White,
+                };
+                _spriteBatch.DrawString(font, line, pos, textColor, 0f, Vector2.Zero, FontScale, SpriteEffects.None, 1f);
 
                 currentY += font.MeasureString(line).Y * FontScale;
             }
