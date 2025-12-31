@@ -100,6 +100,12 @@ public record ConfigMenuTranslation(
     string TextColorRed = "",
     string TextColorGreen = "",
     string TextColorBlue = "",
+    string OutlineColorType = "",
+    string OutlineColorTypeFixed = "",
+    string OutlineColorTypeInverted = "",
+    string OutlineColorRed = "",
+    string OutlineColorGreen = "",
+    string OutlineColorBlue = "",
     string ButtonConfig = "",
     string Title = ""
 );
@@ -188,6 +194,54 @@ public class ConfigMenu : IClickableMenu {
                 ModEntry.Config.TextColor = color;
             }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.B),
             "text-color-fixed"
+        )
+        .Add(
+            // Outline Color Type
+            new LSelect(translation.OutlineColorType, (value) => {
+                switch(value) {
+                    case "Fixed":
+                        optionsManager.Display("outline-color-fixed");
+                        ModEntry.Config.OutlineColorType = OutlineColorType.Fixed;
+                        break;
+                    case "Inverted":
+                        optionsManager.Hide("outline-color-fixed");
+                        ModEntry.Config.OutlineColorType = OutlineColorType.Inverted;
+                        break;
+                }
+            }).AddOption("Fixed", translation.OutlineColorTypeFixed)
+            .AddOption("Inverted", translation.OutlineColorTypeInverted)
+            .DefaultValue(ModEntry.Config.OutlineColorType switch {
+                OutlineColorType.Fixed => 0,
+                OutlineColorType.Inverted => 1,
+                _ => 1
+            })
+        )
+        .Add(
+            // Outline Red
+            new LSlider(translation.OutlineColorRed, (value) => {
+                Color color = ModEntry.Config.OutlineColor;
+                color.R = (byte)value;
+                ModEntry.Config.OutlineColor = color;
+            }).Min(0).Max(255).DefaultValue(ModEntry.Config.OutlineColor.R),
+            "outline-color-fixed"
+        )
+        .Add(
+            // Outline Green
+            new LSlider(translation.OutlineColorGreen, (value) => {
+                Color color = ModEntry.Config.OutlineColor;
+                color.G = (byte)value;
+                ModEntry.Config.OutlineColor = color;
+            }).Min(0).Max(255).DefaultValue(ModEntry.Config.OutlineColor.G),
+            "outline-color-fixed"
+        )
+        .Add(
+            // Outline Blue
+            new LSlider(translation.OutlineColorBlue, (value) => {
+                Color color = ModEntry.Config.OutlineColor;
+                color.B = (byte)value;
+                ModEntry.Config.OutlineColor = color;
+            }).Min(0).Max(255).DefaultValue(ModEntry.Config.OutlineColor.B),
+            "outline-color-fixed"
         )
         ;
         optionsPage.options = optionsManager.GetVisibleOptions();

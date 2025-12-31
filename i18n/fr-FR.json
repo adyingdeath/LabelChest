@@ -11,6 +11,12 @@
     "config-menu.text-color.red": "Rouge",
     "config-menu.text-color.green": "Vert",
     "config-menu.text-color.blue": "Bleu",
+    "config-menu.outline-color-type": "Outline Color Type",
+    "config-menu.outline-color-type.fixed": "Fixed color",
+    "config-menu.outline-color-type.inverted": "Inverse of text",
+    "config-menu.outline-color.red": "Red",
+    "config-menu.outline-color.green": "Green",
+    "config-menu.outline-color.blue": "Blue",
     "config-menu.button.config": "Configuration",
     "config-menu.title": "Paramètres d'Étiquettes de Coffres"
 }

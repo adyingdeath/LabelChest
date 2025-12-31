@@ -11,6 +11,12 @@
     "config-menu.text-color.red": "红色",
     "config-menu.text-color.green": "绿色",
     "config-menu.text-color.blue": "蓝色",
+    "config-menu.outline-color-type": "轮廓颜色类型",
+    "config-menu.outline-color-type.fixed": "固定颜色",
+    "config-menu.outline-color-type.inverted": "与文字颜色相反",
+    "config-menu.outline-color.red": "红色",
+    "config-menu.outline-color.green": "绿色",
+    "config-menu.outline-color.blue": "蓝色",
     "config-menu.button.config": "设置",
     "config-menu.title": "箱子标签设置"
 }

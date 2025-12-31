@@ -7,6 +7,11 @@ namespace LabelChest {
         FollowBox
     }
 
+    public enum OutlineColorType {
+        Fixed,
+        Inverted
+    }
+
     /// <summary>
     /// Configuration class for the LabelChest mod.
     /// </summary>
@@ -19,11 +24,13 @@ namespace LabelChest {
         public TextColorType TextColorType { get; set; } = TextColorType.Fixed;
         /// <summary>
         /// Text color. Default is white.
-        /// Value can be:
-        /// 1. Color object
-        /// 2. {}
         /// </summary>
         public Color TextColor { get; set; } = Color.White;
+        public OutlineColorType OutlineColorType { get; set; } = OutlineColorType.Inverted;
+        /// <summary>
+        /// Outline color. Default is black.
+        /// </summary>
+        public Color OutlineColor { get; set; } = Color.Black;
 
         /// <summary>
         /// Resets the configuration to default values.
@@ -32,6 +39,8 @@ namespace LabelChest {
             FontSize = 1.0f;
             TextColorType = TextColorType.Fixed;
             TextColor = Color.White;
+            OutlineColorType = OutlineColorType.Inverted;
+            OutlineColor = Color.Black;
         }
     }
 }

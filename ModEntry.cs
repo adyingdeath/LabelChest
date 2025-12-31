@@ -125,6 +125,12 @@ namespace LabelChest {
                 Helper.Translation.Get("config-menu.text-color.red"),
                 Helper.Translation.Get("config-menu.text-color.green"),
                 Helper.Translation.Get("config-menu.text-color.blue"),
+                Helper.Translation.Get("config-menu.outline-color-type"),
+                Helper.Translation.Get("config-menu.outline-color-type.fixed"),
+                Helper.Translation.Get("config-menu.outline-color-type.inverted"),
+                Helper.Translation.Get("config-menu.outline-color.red"),
+                Helper.Translation.Get("config-menu.outline-color.green"),
+                Helper.Translation.Get("config-menu.outline-color.blue"),
                 Helper.Translation.Get("config-menu.button.config"),
                 Helper.Translation.Get("config-menu.title")
             );

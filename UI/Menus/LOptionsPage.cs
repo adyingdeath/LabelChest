@@ -37,12 +37,12 @@ public class LOptionsPage : IClickableMenu
     private int optionsSlotHeld = -1;
 
     public LOptionsPage(int x, int y, int width, int height)
-        : base(x, y, width, height)
+        : base(x, y, width, height, true)
     {
         upArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen + 64, 44, 48), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f);
         downArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen + height - 64, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f);
         scrollBar = new ClickableTextureComponent(new Rectangle(upArrow.bounds.X + 12, upArrow.bounds.Y + upArrow.bounds.Height + 4, 24, 40), Game1.mouseCursors, new Rectangle(435, 463, 6, 10), 4f);
-        scrollBarRunner = new Rectangle(scrollBar.bounds.X, upArrow.bounds.Y + upArrow.bounds.Height + 4, scrollBar.bounds.Width, height - upArrow.bounds.Height - 8);
+        scrollBarRunner = new Rectangle(scrollBar.bounds.X, upArrow.bounds.Y + upArrow.bounds.Height + 4, scrollBar.bounds.Width, height - 128 - upArrow.bounds.Height - 8);
         for (int i = 0; i < 7; i++)
         {
             optionSlots.Add(new ClickableComponent(new Rectangle(xPositionOnScreen, yPositionOnScreen + i * (height / 7), width, height / 7), i.ToString() ?? "")
@@ -90,25 +90,6 @@ public class LOptionsPage : IClickableMenu
         {
             OnClose(who);
             onConnection();
-        }
-    }
-
-    private void offerInvite()
-    {
-        waitForServerConnection(Game1.server.offerInvite);
-    }
-
-    private void showInviteCode()
-    {
-        IClickableMenu thisMenu = Game1.activeClickableMenu;
-        waitForServerConnection(delegate
-        {
-            Game1.activeClickableMenu = new InviteCodeDialog(Game1.server.getInviteCode(), OnClose);
-        });
-        void OnClose(Farmer who)
-        {
-            Game1.activeClickableMenu = thisMenu;
-            thisMenu.snapCursorToCurrentSnappedComponent();
         }
     }
 

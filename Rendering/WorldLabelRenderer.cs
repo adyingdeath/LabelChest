@@ -39,7 +39,7 @@ namespace LabelChest.Rendering {
 
             // Determine text color based on configuration and chest
             Color textColor = GetTextColor(chest);
-            Color outlineColor = InvertColor(textColor);
+            Color outlineColor = GetOutlineColor(textColor);
 
             // Calculate total dimensions
             int width = (int)textBoxSize.X + Padding * 2;
@@ -72,6 +72,14 @@ namespace LabelChest.Rendering {
                 TextColorType.Inverted => InvertColor(chest.playerChoiceColor.Value),
                 TextColorType.FollowBox => chest.playerChoiceColor.Value,
                 _ => Color.White,
+            };
+        }
+
+        private Color GetOutlineColor(Color textColor) {
+            return ModEntry.Config.OutlineColorType switch {
+                OutlineColorType.Fixed => ModEntry.Config.OutlineColor,
+                OutlineColorType.Inverted => InvertColor(textColor),
+                _ => InvertColor(textColor),
             };
         }
 

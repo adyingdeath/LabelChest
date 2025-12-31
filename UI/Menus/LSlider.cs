@@ -74,10 +74,10 @@ public class LSlider : LComponent {
         base.receiveKeyPress(key);
         if (Game1.options.snappyMenus && Game1.options.gamepadControls && !greyedOut) {
             if (Game1.options.doesInputListContain(Game1.options.moveRightButton, key)) {
-                value = Math.Min(value + 10, 100);
+                value = Math.Min(value + valueRange / 10.0f, maxValue);
                 onChange(value);
             } else if (Game1.options.doesInputListContain(Game1.options.moveLeftButton, key)) {
-                value = Math.Max(value - 10, 0);
+                value = Math.Max(value - valueRange / 10.0f, minValue);
                 onChange(value);
             }
         }
