@@ -243,6 +243,27 @@ public class ConfigMenu : LOptionsPage {
             }).Min(0).Max(255).DefaultValue(ModEntry.Config.OutlineColor.B),
             "outline-color-fixed"
         );
+
+        // Apply initial visibility based on default values
+        switch(ModEntry.Config.TextColorType) {
+            case TextColorType.Fixed:
+                optionsManager.Display("text-color-fixed");
+                break;
+            case TextColorType.Inverted:
+            case TextColorType.FollowBox:
+                optionsManager.Hide("text-color-fixed");
+                break;
+        }
+
+        switch(ModEntry.Config.OutlineColorType) {
+            case OutlineColorType.Fixed:
+                optionsManager.Display("outline-color-fixed");
+                break;
+            case OutlineColorType.Inverted:
+                optionsManager.Hide("outline-color-fixed");
+                break;
+        }
+
         options = optionsManager.GetVisibleOptions();
     }
 
