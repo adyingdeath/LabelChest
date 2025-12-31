@@ -6,6 +6,7 @@ using StardewValley;
 using StardewValley.Objects;
 using LabelChest.UI.Menus;
 using StardewValley.Menus;
+using System.Collections.Generic;
 
 namespace LabelChest.UI;
 
@@ -110,7 +111,7 @@ public record ConfigMenuTranslation(
     string Title = ""
 );
 
-public class ConfigMenu : IClickableMenu {
+public class ConfigMenu : LOptionsPage {
     private const int WIDTH = 900;
     private const int HEIGHT = 600;
     private const int PADDING_X = 20;
@@ -119,18 +120,17 @@ public class ConfigMenu : IClickableMenu {
     private const int PREVIEW_WIDTH = 100;
     private readonly OptionsManager optionsManager;
     private readonly ConfigMenuTranslation translation;
-    private readonly LOptionsPage optionsPage;
 
-    public ConfigMenu(ConfigMenuTranslation translation) : base((Game1.viewport.Width - WIDTH) / 2, (Game1.viewport.Height - HEIGHT) / 2, WIDTH, HEIGHT, true) {
+    public ConfigMenu(ConfigMenuTranslation translation) 
+        : base(
+            (Game1.viewport.Width - WIDTH) / 2 + PREVIEW_WIDTH + PADDING_X,
+            (Game1.viewport.Height - HEIGHT) / 2 + PADDING_Y,
+            WIDTH - 2 * PADDING_X - PREVIEW_WIDTH,
+            HEIGHT - 2 * PADDING_Y
+        ) {
         this.translation = translation;
-        optionsPage = new LOptionsPage(
-            xPositionOnScreen + PADDING_X + PREVIEW_WIDTH,
-            yPositionOnScreen + PADDING_Y,
-            width - 2 * PADDING_X - PREVIEW_WIDTH,
-            height - 2 * PADDING_Y
-        );
         optionsManager = new((options) => {
-            optionsPage.options = options;
+            this.options = options;
         });
 
         optionsManager
@@ -242,12 +242,15 @@ public class ConfigMenu : IClickableMenu {
                 ModEntry.Config.OutlineColor = color;
             }).Min(0).Max(255).DefaultValue(ModEntry.Config.OutlineColor.B),
             "outline-color-fixed"
-        )
-        ;
-        optionsPage.options = optionsManager.GetVisibleOptions();
+        );
+        options = optionsManager.GetVisibleOptions();
     }
 
     public override void draw(SpriteBatch b) {
+        // Calculate menu position
+        int menuX = xPositionOnScreen - PREVIEW_WIDTH - PADDING_X;
+        int menuY = yPositionOnScreen - PADDING_Y;
+        
         // Draw background dim
         b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
 
@@ -256,10 +259,10 @@ public class ConfigMenu : IClickableMenu {
             b,
             Game1.mouseCursors,
             new Rectangle(384, 373, 18, 18),
-            xPositionOnScreen,
-            yPositionOnScreen,
-            width,
-            height,
+            menuX,
+            menuY,
+            WIDTH,
+            HEIGHT,
             Color.White,
             4f
         );
@@ -269,8 +272,8 @@ public class ConfigMenu : IClickableMenu {
         float chestWidth = 64f;
         float chestScale = chestWidth / 32f;
         Vector2 chestPos = new Vector2(
-            xPositionOnScreen + PADDING_X + PREVIEW_WIDTH / 2 - chestWidth / 2,
-            yPositionOnScreen + height / 2 - chestWidth / 2
+            menuX + PADDING_X + PREVIEW_WIDTH / 2 - chestWidth / 2,
+            menuY + HEIGHT / 2 - chestWidth / 2
         );
         chest.drawInMenu(b, chestPos, chestScale);
         SpriteBatchSwitcher.SwitchAntiAliasing(b);
@@ -278,41 +281,9 @@ public class ConfigMenu : IClickableMenu {
         SpriteBatchSwitcher.SwitchDefault(b);
 
         // Draw options
-        optionsPage.draw(b);
-
-        // Draw close button
         base.draw(b);
 
+        // Draw Mouse
         drawMouse(b);
-    }
-
-    public override void receiveLeftClick(int x, int y, bool playSound = true) {
-        base.receiveLeftClick(x, y, playSound);
-        optionsPage.receiveLeftClick(x, y, playSound);
-    }
-
-    public override void receiveKeyPress(Keys key) {
-        optionsPage.receiveKeyPress(key);
-        base.receiveKeyPress(key);
-    }
-
-    public override void performHoverAction(int x, int y) {
-        optionsPage.performHoverAction(x, y);
-        base.performHoverAction(x, y);
-    }
-
-    public override void receiveScrollWheelAction(int direction) {
-        optionsPage.receiveScrollWheelAction(direction);
-        base.receiveScrollWheelAction(direction);
-    }
-
-    public override void leftClickHeld(int x, int y) {
-        optionsPage.leftClickHeld(x, y);
-        base.leftClickHeld(x, y);
-    }
-
-    public override void releaseLeftClick(int x, int y) {
-        optionsPage.releaseLeftClick(x, y);
-        base.releaseLeftClick(x, y);
     }
 }

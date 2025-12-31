@@ -53,6 +53,10 @@ public class LOptionsPage : IClickableMenu
                 fullyImmutable = true
             });
         }
+
+        upperRightCloseButton.downNeighborID = optionSlots[0].myID;
+        optionSlots[0].upNeighborID = upperRightCloseButton.myID;
+        snapToDefaultClickableComponent();
     }
 
     public override bool readyToClose()
@@ -63,34 +67,6 @@ public class LOptionsPage : IClickableMenu
         }
 
         return base.readyToClose();
-    }
-
-    private void waitForServerConnection(Action onConnection)
-    {
-        IClickableMenu thisMenu;
-        if (Game1.server != null)
-        {
-            if (Game1.server.connected())
-            {
-                onConnection();
-                return;
-            }
-
-            thisMenu = Game1.activeClickableMenu;
-            Game1.activeClickableMenu = new ServerConnectionDialog(OnConfirm, OnClose);
-        }
-
-        void OnClose(Farmer who)
-        {
-            Game1.activeClickableMenu = thisMenu;
-            thisMenu.snapCursorToCurrentSnappedComponent();
-        }
-
-        void OnConfirm(Farmer who)
-        {
-            OnClose(who);
-            onConnection();
-        }
     }
 
     public override void snapToDefaultClickableComponent()
@@ -384,6 +360,8 @@ public class LOptionsPage : IClickableMenu
                 break;
             }
         }
+
+        base.receiveLeftClick(x, y, playSound);
     }
 
     public override void performHoverAction(int x, int y)
@@ -409,6 +387,8 @@ public class LOptionsPage : IClickableMenu
             downArrow.tryHover(x, y);
             scrollBar.tryHover(x, y);
         }
+
+        base.performHoverAction(x, y);
     }
 
     public override void draw(SpriteBatch b)
@@ -440,5 +420,7 @@ public class LOptionsPage : IClickableMenu
         {
             IClickableMenu.drawHoverText(b, hoverText, Game1.smallFont);
         }
+
+        base.draw(b);
     }
 }
