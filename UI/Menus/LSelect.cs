@@ -37,7 +37,7 @@ public class LSelect : LComponent
         : base(label, x, y, (int)Game1.smallFont.MeasureString("Windowed Borderless Mode   ").X + 48, 44)
     {
         this.onChange = onChange;
-        labelOffset.X = bounds.Width + 10;
+        //labelOffset.X = bounds.Width + 10;
     }
 
     public LSelect AddOption(string value, string displayName) {
@@ -59,7 +59,7 @@ public class LSelect : LComponent
         }
 
         dropDownBounds = new Rectangle(bounds.X, bounds.Y, bounds.Width - 48, bounds.Height * dropDownOptions.Count);
-        labelOffset.X = bounds.Width + 10;
+        //labelOffset.X = bounds.Width + 10;
     }
 
     public override void leftClickHeld(int x, int y)

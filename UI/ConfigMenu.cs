@@ -1,6 +1,7 @@
 using LabelChest.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Objects;
 using LabelChest.UI.Menus;
@@ -28,7 +29,7 @@ class OptionsManager {
         }
     }
 
-    public OptionsManager Add(LComponent option, string tag) {
+    public OptionsManager Add(LComponent option, string tag = "default") {
         options.Add(option);
         optionsTag.Add(tag);
         if (!tagVisibility.ContainsKey(tag)) {
@@ -103,7 +104,7 @@ public record ConfigMenuTranslation(
     string Title = ""
 );
 
-public class ConfigMenu : LOptionsPage {
+public class ConfigMenu : IClickableMenu {
     private const int WIDTH = 900;
     private const int HEIGHT = 600;
     private const int PADDING_X = 20;
@@ -115,11 +116,18 @@ public class ConfigMenu : LOptionsPage {
     });
     private readonly OptionsManager optionsManager;
     private readonly ConfigMenuTranslation translation;
-    
-    public ConfigMenu(ConfigMenuTranslation translation) : base((Game1.viewport.Width - WIDTH) / 2, (Game1.viewport.Height - HEIGHT) / 2, WIDTH, HEIGHT) {
+    private readonly LOptionsPage optionsPage;
+
+    public ConfigMenu(ConfigMenuTranslation translation) : base((Game1.viewport.Width - WIDTH) / 2, (Game1.viewport.Height - HEIGHT) / 2, WIDTH, HEIGHT, true) {
         this.translation = translation;
+        optionsPage = new LOptionsPage(
+            xPositionOnScreen + PADDING_X + PREVIEW_WIDTH,
+            yPositionOnScreen + PADDING_Y,
+            width - 2 * PADDING_X - PREVIEW_WIDTH,
+            height - 2 * PADDING_Y
+        );
         optionsManager = new((options) => {
-            this.options = options;
+            optionsPage.options = options;
         });
 
         optionsManager
@@ -129,8 +137,7 @@ public class ConfigMenu : LOptionsPage {
                 if (ModEntry.Config.FontSize == value) return;
                 ModEntry.Config.FontSize = value;
                 debouncer.Invoke();
-            }).Min(0.2f).Max(3.0f).DefaultValue(ModEntry.Config.FontSize),
-            "default"
+            }).Min(0.2f).Max(3.0f).DefaultValue(ModEntry.Config.FontSize)
         )
         .Add(
             // Text Color Type
@@ -142,8 +149,7 @@ public class ConfigMenu : LOptionsPage {
                 }
             }).AddOption("Fixed", translation.TextColorTypeFixed)
             .AddOption("Inverted", translation.TextColorTypeInverted)
-            .AddOption("FollowBox", translation.TextColorTypeFollowBox),
-            "default"
+            .AddOption("FollowBox", translation.TextColorTypeFollowBox)
         )
         .Add(
             // Red
@@ -176,25 +182,7 @@ public class ConfigMenu : LOptionsPage {
             "text-color-fixed"
         )
         ;
-        options = optionsManager.GetVisibleOptions();
-
-        optionSlots.Clear();
-        for (int i = 0; i < 7; i++) {
-            optionSlots.Add(new ClickableComponent(
-                new Rectangle(
-                    xPositionOnScreen + PADDING_X + PREVIEW_WIDTH,
-                    yPositionOnScreen + PADDING_Y + i * ((height - 2 * PADDING_Y - 6 * SPACE_Y) / 7) + SPACE_Y * Math.Max(0, i - 0),
-                    width - 2 * xPositionOnScreen - 2 * PADDING_X - PREVIEW_WIDTH,
-                    (height - 2 * PADDING_Y - 6 * SPACE_Y) / 7
-                ),
-                i.ToString() ?? ""
-            ) {
-                myID = i,
-                downNeighborID = (i < 6) ? (i + 1) : (-7777),
-                upNeighborID = (i > 0) ? (i - 1) : (-7777),
-                fullyImmutable = true
-            });
-        }
+        optionsPage.options = optionsManager.GetVisibleOptions();
     }
 
     public override void draw(SpriteBatch b) {
@@ -226,8 +214,41 @@ public class ConfigMenu : LOptionsPage {
         ModEntry.WorldLabelRenderer.DrawLabel(b, chestPos + new Vector2(chestWidth / 2), "example");
 
         // Draw options
+        optionsPage.draw(b);
+
+        // Draw close button
         base.draw(b);
 
         drawMouse(b);
+    }
+
+    public override void receiveLeftClick(int x, int y, bool playSound = true) {
+        base.receiveLeftClick(x, y, playSound);
+        optionsPage.receiveLeftClick(x, y, playSound);
+    }
+
+    public override void receiveKeyPress(Keys key) {
+        optionsPage.receiveKeyPress(key);
+        base.receiveKeyPress(key);
+    }
+
+    public override void performHoverAction(int x, int y) {
+        optionsPage.performHoverAction(x, y);
+        base.performHoverAction(x, y);
+    }
+
+    public override void receiveScrollWheelAction(int direction) {
+        optionsPage.receiveScrollWheelAction(direction);
+        base.receiveScrollWheelAction(direction);
+    }
+
+    public override void leftClickHeld(int x, int y) {
+        optionsPage.leftClickHeld(x, y);
+        base.leftClickHeld(x, y);
+    }
+
+    public override void releaseLeftClick(int x, int y) {
+        optionsPage.releaseLeftClick(x, y);
+        base.releaseLeftClick(x, y);
     }
 }
