@@ -52,6 +52,11 @@ public class LSelect : LComponent
         return this;
     }
 
+    public LSelect DefaultValue(string selectedOptionValue) {
+        selectedOption = dropDownOptions.FindIndex((option) => option.Equals(selectedOptionValue));
+        return this;
+    }
+
     public virtual void RecalculateBounds()
     {
         foreach (string dropDownDisplayOption in dropDownDisplayOptions)

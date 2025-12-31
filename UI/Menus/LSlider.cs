@@ -25,6 +25,8 @@ public class LSlider : LComponent {
 
     private float maxValue = 1;
 
+    private float step = 0.1f;
+
     private float valueRange = 1;
 
     public LSlider(string label, Action<float> onChange, int x = -1, int y = -1)
@@ -36,11 +38,17 @@ public class LSlider : LComponent {
     public LSlider Min(float minValue) {
         this.minValue = minValue;
         valueRange = maxValue - minValue;
+        step = valueRange / 10;
         return this;
     }
     public LSlider Max(float maxValue) {
         this.maxValue = maxValue;
         valueRange = maxValue - minValue;
+        step = valueRange / 10;
+        return this;
+    }
+    public LSlider Step(float step) {
+        this.step = step;
         return this;
     }
     public LSlider DefaultValue(float value) {
@@ -74,10 +82,10 @@ public class LSlider : LComponent {
         base.receiveKeyPress(key);
         if (Game1.options.snappyMenus && Game1.options.gamepadControls && !greyedOut) {
             if (Game1.options.doesInputListContain(Game1.options.moveRightButton, key)) {
-                value = Math.Min(value + valueRange / 10.0f, maxValue);
+                value = Math.Min(value + step, maxValue);
                 onChange(value);
             } else if (Game1.options.doesInputListContain(Game1.options.moveLeftButton, key)) {
-                value = Math.Max(value - valueRange / 10.0f, minValue);
+                value = Math.Max(value - step, minValue);
                 onChange(value);
             }
         }

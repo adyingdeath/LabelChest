@@ -54,8 +54,6 @@ public class LOptionsPage : IClickableMenu
             });
         }
 
-        upperRightCloseButton.downNeighborID = optionSlots[0].myID;
-        optionSlots[0].upNeighborID = upperRightCloseButton.myID;
         snapToDefaultClickableComponent();
     }
 
@@ -72,7 +70,7 @@ public class LOptionsPage : IClickableMenu
     public override void snapToDefaultClickableComponent()
     {
         base.snapToDefaultClickableComponent();
-        currentlySnappedComponent = getComponentWithID(1);
+        currentlySnappedComponent = getComponentWithID(0);
         snapCursorToCurrentSnappedComponent();
     }
 
@@ -106,7 +104,7 @@ public class LOptionsPage : IClickableMenu
                 return;
             }
 
-            currentlySnappedComponent = getComponentWithID(12348);
+            currentlySnappedComponent = getComponentWithID(upperRightCloseButton_ID);
             if (currentlySnappedComponent != null)
             {
                 currentlySnappedComponent.downNeighborID = 0;

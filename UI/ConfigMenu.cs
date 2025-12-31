@@ -34,34 +34,23 @@ public class ConfigMenu : LOptionsPage {
             new LSlider(I18n.ConfigMenu_FontSize(), (value) => {
                 if (ModEntry.Config.FontSize == value) return;
                 ModEntry.Config.FontSize = value;
-            }).Min(0.2f).Max(3.0f).DefaultValue(ModEntry.Config.FontSize)
+            }).Min(0.2f).Max(3.0f).Step(0.1f).DefaultValue(ModEntry.Config.FontSize)
         )
         .Add(
             // Text Color Type
             new LSelect(I18n.ConfigMenu_TextColorType_Label(), (value) => {
-                switch(value) {
-                    case "Fixed":
+                if (Enum.TryParse(value, true, out TextColorType enumValue)) {
+                    ModEntry.Config.TextColorType = enumValue;
+                    if (enumValue == TextColorType.Fixed) {
                         optionsManager.Display("text-color-fixed");
-                        ModEntry.Config.TextColorType = TextColorType.Fixed;
-                        break;
-                    case "Inverted":
+                    } else {
                         optionsManager.Hide("text-color-fixed");
-                        ModEntry.Config.TextColorType = TextColorType.Inverted;
-                        break;
-                    case "FollowBox":
-                        optionsManager.Hide("text-color-fixed");
-                        ModEntry.Config.TextColorType = TextColorType.FollowBox;
-                        break;
+                    }
                 }
-            }).AddOption("Fixed", I18n.ConfigMenu_TextColorType_Fixed())
-            .AddOption("Inverted", I18n.ConfigMenu_TextColorType_Inverted())
-            .AddOption("FollowBox", I18n.ConfigMenu_TextColorType_FollowBox())
-            .DefaultValue(ModEntry.Config.TextColorType switch {
-                TextColorType.Fixed => 0,
-                TextColorType.Inverted => 1,
-                TextColorType.FollowBox => 2,
-                _ => 0
-            })
+            }).AddOption(TextColorType.Fixed.ToString(), I18n.ConfigMenu_TextColorType_Fixed())
+            .AddOption(TextColorType.Inverted.ToString(), I18n.ConfigMenu_TextColorType_Inverted())
+            .AddOption(TextColorType.FollowBox.ToString(), I18n.ConfigMenu_TextColorType_FollowBox())
+            .DefaultValue(ModEntry.Config.TextColorType.ToString())
         )
         .Add(
             // Red
@@ -69,7 +58,7 @@ public class ConfigMenu : LOptionsPage {
                 Color color = ModEntry.Config.TextColor;
                 color.R = (byte)value;
                 ModEntry.Config.TextColor = color;
-            }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.R),
+            }).Min(0).Max(255).Step(10).DefaultValue(ModEntry.Config.TextColor.R),
             "text-color-fixed"
         )
         .Add(
@@ -78,7 +67,7 @@ public class ConfigMenu : LOptionsPage {
                 Color color = ModEntry.Config.TextColor;
                 color.G = (byte)value;
                 ModEntry.Config.TextColor = color;
-            }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.G),
+            }).Min(0).Max(255).Step(10).DefaultValue(ModEntry.Config.TextColor.G),
             "text-color-fixed"
         )
         .Add(
@@ -87,29 +76,23 @@ public class ConfigMenu : LOptionsPage {
                 Color color = ModEntry.Config.TextColor;
                 color.B = (byte)value;
                 ModEntry.Config.TextColor = color;
-            }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.B),
+            }).Min(0).Max(255).Step(10).DefaultValue(ModEntry.Config.TextColor.B),
             "text-color-fixed"
         )
         .Add(
             // Outline Color Type
             new LSelect(I18n.ConfigMenu_OutlineColorType_Label(), (value) => {
-                switch(value) {
-                    case "Fixed":
+                if (Enum.TryParse(value, true, out OutlineColorType enumValue)) {
+                    ModEntry.Config.OutlineColorType = enumValue;
+                    if (enumValue == OutlineColorType.Fixed) {
                         optionsManager.Display("outline-color-fixed");
-                        ModEntry.Config.OutlineColorType = OutlineColorType.Fixed;
-                        break;
-                    case "Inverted":
+                    } else {
                         optionsManager.Hide("outline-color-fixed");
-                        ModEntry.Config.OutlineColorType = OutlineColorType.Inverted;
-                        break;
+                    }
                 }
-            }).AddOption("Fixed", I18n.ConfigMenu_OutlineColorType_Fixed())
-            .AddOption("Inverted", I18n.ConfigMenu_OutlineColorType_Inverted())
-            .DefaultValue(ModEntry.Config.OutlineColorType switch {
-                OutlineColorType.Fixed => 0,
-                OutlineColorType.Inverted => 1,
-                _ => 1
-            })
+            }).AddOption(OutlineColorType.Inverted.ToString(), I18n.ConfigMenu_OutlineColorType_Inverted())
+            .AddOption(OutlineColorType.Fixed.ToString(), I18n.ConfigMenu_OutlineColorType_Fixed())
+            .DefaultValue(ModEntry.Config.OutlineColorType.ToString())
         )
         .Add(
             // Outline Red
@@ -117,7 +100,7 @@ public class ConfigMenu : LOptionsPage {
                 Color color = ModEntry.Config.OutlineColor;
                 color.R = (byte)value;
                 ModEntry.Config.OutlineColor = color;
-            }).Min(0).Max(255).DefaultValue(ModEntry.Config.OutlineColor.R),
+            }).Min(0).Max(255).Step(10).DefaultValue(ModEntry.Config.OutlineColor.R),
             "outline-color-fixed"
         )
         .Add(
@@ -126,7 +109,7 @@ public class ConfigMenu : LOptionsPage {
                 Color color = ModEntry.Config.OutlineColor;
                 color.G = (byte)value;
                 ModEntry.Config.OutlineColor = color;
-            }).Min(0).Max(255).DefaultValue(ModEntry.Config.OutlineColor.G),
+            }).Min(0).Max(255).Step(10).DefaultValue(ModEntry.Config.OutlineColor.G),
             "outline-color-fixed"
         )
         .Add(
@@ -135,7 +118,7 @@ public class ConfigMenu : LOptionsPage {
                 Color color = ModEntry.Config.OutlineColor;
                 color.B = (byte)value;
                 ModEntry.Config.OutlineColor = color;
-            }).Min(0).Max(255).DefaultValue(ModEntry.Config.OutlineColor.B),
+            }).Min(0).Max(255).Step(10).DefaultValue(ModEntry.Config.OutlineColor.B),
             "outline-color-fixed"
         );
 
