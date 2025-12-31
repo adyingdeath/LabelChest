@@ -1,7 +1,7 @@
 {
   "Name": "Label Chest",
   "Author": "adyingdeath",
-  "Version": "1.0.4",
+  "Version": "1.0.5",
   "Description": "Add labels to your chests.",
   "UniqueID": "adyingdeath.LabelChest",
   "EntryDll": "LabelChest.dll",
