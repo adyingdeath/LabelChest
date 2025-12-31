@@ -219,7 +219,9 @@ public class ConfigMenu : IClickableMenu {
             yPositionOnScreen + height / 2 - chestWidth / 2
         );
         chest.drawInMenu(b, chestPos, chestScale);
+        SpriteBatchSwitcher.SwitchAntiAliasing(b);
         ModEntry.WorldLabelRenderer.DrawLabel(b, chestPos + new Vector2(chestWidth / 2), "example", chest);
+        SpriteBatchSwitcher.SwitchDefault(b);
 
         // Draw options
         optionsPage.draw(b);

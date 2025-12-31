@@ -10,6 +10,7 @@ using StardewValley.Objects;
 using LabelChest.Managers;
 using LabelChest.UI;
 using LabelChest.Rendering;
+using LabelChest.Utils;
 
 namespace LabelChest {
     public class ModEntry : Mod {
@@ -22,7 +23,17 @@ namespace LabelChest {
 
         public override void Entry(IModHelper helper) {
             // Load configuration
-            Config = Helper.ReadConfig<ModConfig>();
+            try {
+                // Try to read configuration
+                Config = Helper.ReadConfig<ModConfig>();
+            } catch (Exception ex) {
+                // Error message
+                Monitor.Log($"Error reading configuration file 'config.json'. Written a new one to the Mod folder.\n{ex}", LogLevel.Error);
+                // Use default configuration
+                Config = new ModConfig();
+                // Save
+                Helper.WriteConfig(Config);
+            }
 
             // Initialize managers
             _menuButton = new MenuLabelButton(Helper.Translation, OnLabelButtonClicked);
@@ -68,12 +79,12 @@ namespace LabelChest {
             if (e.Button.IsUseToolButton() || e.Button.IsActionButton()) {
                 // Fix for UI Scale: Convert screen pixels to UI coordinates
                 Vector2 cursorPosition = Utility.ModifyCoordinatesForUIScale(e.Cursor.ScreenPixels);
-                
+
                 // Handle config button click first (since it's to the right)
                 if (_configButton.HandleClick(menu, cursorPosition)) {
                     return;
                 }
-                
+
                 // Then handle label button click
                 if (_menuButton.HandleClick(menu, chest, cursorPosition)) {
                     return;
@@ -135,7 +146,7 @@ namespace LabelChest {
 
             // Update bounds for both buttons
             (_menuButton.bounds, _configButton.bounds) = _chestMenuButtonManager.GetButtonGroupBounds(menu);
-            
+
             // Setup neighbors for proper controller navigation
             _chestMenuButtonManager.SetupNeighbors();
             _chestMenuButtonManager.UpdateOtherComponentsNeighbors(menu);
@@ -150,16 +161,7 @@ namespace LabelChest {
                 return;
 
             // Restart SpriteBatch with our settings for anti-aliasing.
-            e.SpriteBatch.End();
-            e.SpriteBatch.Begin(
-                sortMode: SpriteSortMode.Deferred,
-                blendState: BlendState.AlphaBlend,
-                samplerState: SamplerState.LinearClamp,
-                depthStencilState: null,
-                rasterizerState: null,
-                effect: null,
-                transformMatrix: null
-            );
+            SpriteBatchSwitcher.SwitchAntiAliasing(e.SpriteBatch);
 
             foreach (var pair in Game1.currentLocation.Objects.Pairs) {
                 if (pair.Value is Chest chest && ChestLabelManager.HasLabel(chest)) {
@@ -169,6 +171,8 @@ namespace LabelChest {
                     }
                 }
             }
+
+            SpriteBatchSwitcher.SwitchDefault(e.SpriteBatch);
         }
 
         // --- Helpers ---
@@ -183,6 +187,8 @@ namespace LabelChest {
         protected override void Dispose(bool disposing) {
             if (disposing) {
                 //CacheManager?.Dispose();
+                // Save config
+                Helper.WriteConfig<ModConfig>(Config);
             }
             base.Dispose(disposing);
         }

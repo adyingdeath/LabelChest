@@ -82,13 +82,16 @@ namespace LabelChest.Rendering {
         private void DrawTextOutline(SpriteBatch spriteBatch, SpriteFont font, Vector2 position, string text, Color color) {
             const float offset = 2.5f;
             const float TWO_PI = (float)(2 * Math.PI);
-            const float TENTH_PI = (float)(Math.PI / 10);
-            for (float theta = 0; theta <= TWO_PI; theta += TENTH_PI) {
+            const float MIN_DELTA_THETA = (float)(Math.PI / 10);
+            const float MAX_DELTA_THETA = (float)(Math.PI / 3);
+            float deltaTheta = MIN_DELTA_THETA;
+            for (float theta = 0; theta <= TWO_PI; theta += deltaTheta) {
                 for (float radius = offset; radius >= 0; radius -= 0.25f) {
                     float x = (float)(Math.Cos(theta) * radius);
                     float y = (float)(Math.Sin(theta) * radius);
                     spriteBatch.DrawString(font, text, position + new Vector2(x, y), color, 0f, Vector2.Zero, FontScale, SpriteEffects.None, 1f);
                 }
+                deltaTheta = 0.5f * deltaTheta + 0.5f * MAX_DELTA_THETA;
             }
         }
     }
