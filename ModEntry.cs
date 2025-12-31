@@ -22,6 +22,8 @@ namespace LabelChest {
         public static WorldLabelRenderer WorldLabelRenderer { get; private set; } = null!;
 
         public override void Entry(IModHelper helper) {
+            I18n.Init(helper.Translation);
+
             // Load configuration
             try {
                 // Try to read configuration
@@ -36,8 +38,8 @@ namespace LabelChest {
             }
 
             // Initialize managers
-            _menuButton = new MenuLabelButton(Helper.Translation, OnLabelButtonClicked);
-            _configButton = new ConfigButton(Helper.Translation, OnConfigButtonClicked);
+            _menuButton = new MenuLabelButton(OnLabelButtonClicked);
+            _configButton = new ConfigButton(OnConfigButtonClicked);
             _chestMenuButtonManager = new ChestMenuButtonManager(_menuButton, _configButton);
             WorldLabelRenderer = new WorldLabelRenderer();
 
@@ -97,16 +99,8 @@ namespace LabelChest {
             if (chest == null)
                 return;
 
-            // Create translation dictionary for the naming menu
-            ChestNamingMenuTranslation namingTranslations = new(
-                Helper.Translation.Get("set-label-title"),
-                Helper.Translation.Get("cancel-button"),
-                Helper.Translation.Get("ok-button")
-            );
-
             // Open ChestNamingMenu with translation dictionary
             Game1.activeClickableMenu = new ChestNamingMenu(
-                namingTranslations,
                 currentLabel,
                 (label) => {
                     ChestLabelManager.SetLabel(chest, label);
@@ -116,25 +110,7 @@ namespace LabelChest {
 
         private void OnConfigButtonClicked() {
             Helper.Input.Suppress(SButton.MouseLeft);
-            ConfigMenuTranslation translation = new(
-                Helper.Translation.Get("config-menu.font-size"),
-                Helper.Translation.Get("config-menu.text-color-type"),
-                Helper.Translation.Get("config-menu.text-color-type.fixed"),
-                Helper.Translation.Get("config-menu.text-color-type.inverted"),
-                Helper.Translation.Get("config-menu.text-color-type.follow-box"),
-                Helper.Translation.Get("config-menu.text-color.red"),
-                Helper.Translation.Get("config-menu.text-color.green"),
-                Helper.Translation.Get("config-menu.text-color.blue"),
-                Helper.Translation.Get("config-menu.outline-color-type"),
-                Helper.Translation.Get("config-menu.outline-color-type.fixed"),
-                Helper.Translation.Get("config-menu.outline-color-type.inverted"),
-                Helper.Translation.Get("config-menu.outline-color.red"),
-                Helper.Translation.Get("config-menu.outline-color.green"),
-                Helper.Translation.Get("config-menu.outline-color.blue"),
-                Helper.Translation.Get("config-menu.button.config"),
-                Helper.Translation.Get("config-menu.title")
-            );
-            Game1.activeClickableMenu = new ConfigMenu(translation);
+            Game1.activeClickableMenu = new ConfigMenu();
         }
 
         private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e) {

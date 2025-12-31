@@ -11,14 +11,12 @@ namespace LabelChest.UI {
     /// </summary>
     public class ConfigButton : ClickableComponent {
         private const string ButtonName = "config-button";
-        private readonly ITranslationHelper _translations;
         private readonly Action _onConfigClicked;
 
-        public ConfigButton(ITranslationHelper translations, Action onConfigClicked)
+        public ConfigButton(Action onConfigClicked)
             : base(Rectangle.Empty, ButtonName) {
-            _translations = translations;
             _onConfigClicked = onConfigClicked;
-            this.myID = 99910525; // Different ID from MenuLabelButton
+            this.myID = 9876544; // Different ID from MenuLabelButton
         }
 
         /// <summary>Draws the config button in the chest menu.</summary>
@@ -60,7 +58,7 @@ namespace LabelChest.UI {
             
             if (isHover) {
                 // Tooltip with translation
-                string tooltip = _translations.Get("config-menu.button.config");
+                string tooltip = I18n.ConfigMenu_Button_Config();
                 IClickableMenu.drawHoverText(b, tooltip, Game1.smallFont);
             }
 

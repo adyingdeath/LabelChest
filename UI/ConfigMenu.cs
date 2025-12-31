@@ -8,25 +8,6 @@ using StardewValley.Menus;
 
 namespace LabelChest.UI;
 
-public record ConfigMenuTranslation(
-    string FontSize = "",
-    string TextColorType = "",
-    string TextColorTypeFixed = "",
-    string TextColorTypeInverted = "",
-    string TextColorTypeFollowBox = "",
-    string TextColorRed = "",
-    string TextColorGreen = "",
-    string TextColorBlue = "",
-    string OutlineColorType = "",
-    string OutlineColorTypeFixed = "",
-    string OutlineColorTypeInverted = "",
-    string OutlineColorRed = "",
-    string OutlineColorGreen = "",
-    string OutlineColorBlue = "",
-    string ButtonConfig = "",
-    string Title = ""
-);
-
 public class ConfigMenu : LOptionsPage {
     private const int WIDTH = 900;
     private const int HEIGHT = 600;
@@ -35,16 +16,14 @@ public class ConfigMenu : LOptionsPage {
     private const int SPACE_Y = 8;
     private const int PREVIEW_WIDTH = 100;
     private readonly OptionsManager optionsManager;
-    private readonly ConfigMenuTranslation translation;
 
-    public ConfigMenu(ConfigMenuTranslation translation) 
+    public ConfigMenu() 
         : base(
             (Game1.viewport.Width - WIDTH) / 2 + PREVIEW_WIDTH + PADDING_X,
             (Game1.viewport.Height - HEIGHT) / 2 + PADDING_Y,
             WIDTH - 2 * PADDING_X - PREVIEW_WIDTH,
             HEIGHT - 2 * PADDING_Y
         ) {
-        this.translation = translation;
         optionsManager = new((options) => {
             this.options = options;
         });
@@ -52,14 +31,14 @@ public class ConfigMenu : LOptionsPage {
         optionsManager
         .Add(
             // Font Size
-            new LSlider(translation.FontSize, (value) => {
+            new LSlider(I18n.ConfigMenu_FontSize(), (value) => {
                 if (ModEntry.Config.FontSize == value) return;
                 ModEntry.Config.FontSize = value;
             }).Min(0.2f).Max(3.0f).DefaultValue(ModEntry.Config.FontSize)
         )
         .Add(
             // Text Color Type
-            new LSelect(translation.TextColorType, (value) => {
+            new LSelect(I18n.ConfigMenu_TextColorType_Label(), (value) => {
                 switch(value) {
                     case "Fixed":
                         optionsManager.Display("text-color-fixed");
@@ -74,9 +53,9 @@ public class ConfigMenu : LOptionsPage {
                         ModEntry.Config.TextColorType = TextColorType.FollowBox;
                         break;
                 }
-            }).AddOption("Fixed", translation.TextColorTypeFixed)
-            .AddOption("Inverted", translation.TextColorTypeInverted)
-            .AddOption("FollowBox", translation.TextColorTypeFollowBox)
+            }).AddOption("Fixed", I18n.ConfigMenu_TextColorType_Fixed())
+            .AddOption("Inverted", I18n.ConfigMenu_TextColorType_Inverted())
+            .AddOption("FollowBox", I18n.ConfigMenu_TextColorType_FollowBox())
             .DefaultValue(ModEntry.Config.TextColorType switch {
                 TextColorType.Fixed => 0,
                 TextColorType.Inverted => 1,
@@ -86,7 +65,7 @@ public class ConfigMenu : LOptionsPage {
         )
         .Add(
             // Red
-            new LSlider(translation.TextColorRed, (value) => {
+            new LSlider(I18n.ConfigMenu_TextColor_Red(), (value) => {
                 Color color = ModEntry.Config.TextColor;
                 color.R = (byte)value;
                 ModEntry.Config.TextColor = color;
@@ -95,7 +74,7 @@ public class ConfigMenu : LOptionsPage {
         )
         .Add(
             // Green
-            new LSlider(translation.TextColorGreen, (value) => {
+            new LSlider(I18n.ConfigMenu_TextColor_Green(), (value) => {
                 Color color = ModEntry.Config.TextColor;
                 color.G = (byte)value;
                 ModEntry.Config.TextColor = color;
@@ -104,7 +83,7 @@ public class ConfigMenu : LOptionsPage {
         )
         .Add(
             // Blue
-            new LSlider(translation.TextColorBlue, (value) => {
+            new LSlider(I18n.ConfigMenu_TextColor_Blue(), (value) => {
                 Color color = ModEntry.Config.TextColor;
                 color.B = (byte)value;
                 ModEntry.Config.TextColor = color;
@@ -113,7 +92,7 @@ public class ConfigMenu : LOptionsPage {
         )
         .Add(
             // Outline Color Type
-            new LSelect(translation.OutlineColorType, (value) => {
+            new LSelect(I18n.ConfigMenu_OutlineColorType_Label(), (value) => {
                 switch(value) {
                     case "Fixed":
                         optionsManager.Display("outline-color-fixed");
@@ -124,8 +103,8 @@ public class ConfigMenu : LOptionsPage {
                         ModEntry.Config.OutlineColorType = OutlineColorType.Inverted;
                         break;
                 }
-            }).AddOption("Fixed", translation.OutlineColorTypeFixed)
-            .AddOption("Inverted", translation.OutlineColorTypeInverted)
+            }).AddOption("Fixed", I18n.ConfigMenu_OutlineColorType_Fixed())
+            .AddOption("Inverted", I18n.ConfigMenu_OutlineColorType_Inverted())
             .DefaultValue(ModEntry.Config.OutlineColorType switch {
                 OutlineColorType.Fixed => 0,
                 OutlineColorType.Inverted => 1,
@@ -134,7 +113,7 @@ public class ConfigMenu : LOptionsPage {
         )
         .Add(
             // Outline Red
-            new LSlider(translation.OutlineColorRed, (value) => {
+            new LSlider(I18n.ConfigMenu_OutlineColor_Red(), (value) => {
                 Color color = ModEntry.Config.OutlineColor;
                 color.R = (byte)value;
                 ModEntry.Config.OutlineColor = color;
@@ -143,7 +122,7 @@ public class ConfigMenu : LOptionsPage {
         )
         .Add(
             // Outline Green
-            new LSlider(translation.OutlineColorGreen, (value) => {
+            new LSlider(I18n.ConfigMenu_OutlineColor_Green(), (value) => {
                 Color color = ModEntry.Config.OutlineColor;
                 color.G = (byte)value;
                 ModEntry.Config.OutlineColor = color;
@@ -152,7 +131,7 @@ public class ConfigMenu : LOptionsPage {
         )
         .Add(
             // Outline Blue
-            new LSlider(translation.OutlineColorBlue, (value) => {
+            new LSlider(I18n.ConfigMenu_OutlineColor_Blue(), (value) => {
                 Color color = ModEntry.Config.OutlineColor;
                 color.B = (byte)value;
                 ModEntry.Config.OutlineColor = color;

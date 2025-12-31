@@ -8,12 +8,6 @@ using StardewValley;
 using StardewValley.Menus;
 
 namespace LabelChest.UI {
-    public record ChestNamingMenuTranslation(
-        string SetLabelTitle = "Set Chest Label",
-        string CancelButton = "Cancel",
-        string OkButton = "OK"
-    );
-
     public class ChestNamingMenu : IClickableMenu {
         private const int TEXTBOX_WIDTH = 300;
         private const int BUTTON_GAP = 4;
@@ -25,7 +19,6 @@ namespace LabelChest.UI {
         public ClickableTextureComponent cancelButton;
         public ClickableTextureComponent doneButton;
         private Action<string> onConfirm;
-        private ChestNamingMenuTranslation translations;
 
         // Component IDs for navigation
         private const int TEXTBOX_CC_ID = 104;
@@ -35,16 +28,14 @@ namespace LabelChest.UI {
         private readonly string originalText;
 
         public ChestNamingMenu(
-            ChestNamingMenuTranslation translations,
             string originalText,
             Action<string> onConfirm
         ) {
-            this.translations = translations;
             this.originalText = originalText;
             this.onConfirm = onConfirm;
 
             // Calculate window size based on content
-            string title = translations.SetLabelTitle;
+            string title = I18n.SetLabelMenu_Title();
             Vector2 titleSize = Game1.dialogueFont.MeasureString(title);
 
             width = Math.Max(400, (int)titleSize.X + 100);
@@ -210,7 +201,7 @@ namespace LabelChest.UI {
             );
 
             // Draw Title (Centered)
-            string title = translations.SetLabelTitle;
+            string title = I18n.SetLabelMenu_Title();
             Vector2 titleSize = Game1.dialogueFont.MeasureString(title);
             Utility.drawTextWithShadow(
                 b,
@@ -227,9 +218,9 @@ namespace LabelChest.UI {
 
             // Draw button tooltips on hover
             if (cancelButton.containsPoint(Game1.getMouseX(), Game1.getMouseY())) {
-                drawHoverText(b, translations.CancelButton, Game1.smallFont);
+                drawHoverText(b, I18n.SetLabelMenu_CancelButton(), Game1.smallFont);
             } else if (doneButton.containsPoint(Game1.getMouseX(), Game1.getMouseY())) {
-                drawHoverText(b, translations.OkButton, Game1.smallFont);
+                drawHoverText(b, I18n.SetLabelMenu_OkButton(), Game1.smallFont);
             }
 
             drawMouse(b);

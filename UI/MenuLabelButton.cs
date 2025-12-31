@@ -14,12 +14,10 @@ namespace LabelChest.UI {
     /// </summary>
     public class MenuLabelButton : ClickableComponent {
         private const string ButtonName = "label-chest-button";
-        private readonly ITranslationHelper _translations;
         private readonly Action<string> _onLabelSet;
 
-        public MenuLabelButton(ITranslationHelper translations, Action<string> onLabelSet)
+        public MenuLabelButton(Action<string> onLabelSet)
             : base(Rectangle.Empty, ButtonName) {
-            _translations = translations;
             _onLabelSet = onLabelSet;
             this.myID = 9876543;
         }
@@ -43,7 +41,7 @@ namespace LabelChest.UI {
             // Determine button text
             string labelText = ChestLabelManager.HasLabel(chest) && !string.IsNullOrWhiteSpace(ChestLabelManager.GetLabel(chest))
                 ? ChestLabelManager.GetLabel(chest)
-                : _translations.Get("set-label-button");
+                : I18n.ChestMenu_ButtonTitle();
 
             // Center text
             Vector2 textSize = Game1.smallFont.MeasureString(labelText);
@@ -60,7 +58,7 @@ namespace LabelChest.UI {
             float alpha = isHover ? 0.5f : 1f;
             b.DrawString(Game1.smallFont, labelText, textPos, Game1.textColor * alpha);
             if (isHover) {
-                IClickableMenu.drawHoverText(b, _translations.Get("set-label-button"), Game1.smallFont);
+                IClickableMenu.drawHoverText(b, I18n.ChestMenu_ButtonTitle(), Game1.smallFont);
             }
 
             // Redraw mouse cursor
@@ -77,7 +75,7 @@ namespace LabelChest.UI {
                 || menu.currentlySnappedComponent == this) {
                 Game1.playSound("drumkit6");
                 string currentLabel = ChestLabelManager.GetLabel(chest);
-                string title = _translations.Get("set-label-title");
+                string title = I18n.ChestMenu_ButtonTitle();
 
                 _onLabelSet?.Invoke(currentLabel);
                 return true;
