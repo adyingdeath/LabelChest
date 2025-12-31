@@ -18,5 +18,6 @@
     "config-menu.outline-color-type.inverted": "Inverse of text",
     "config-menu.outline-color.red": "Red",
     "config-menu.outline-color.green": "Green",
-    "config-menu.outline-color.blue": "Blue"
+    "config-menu.outline-color.blue": "Blue",
+    "config-menu.preview-text": "Example Label"
 }

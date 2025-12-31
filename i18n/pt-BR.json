@@ -13,10 +13,11 @@
     "config-menu.text-color.red": "Vermelho",
     "config-menu.text-color.green": "Verde",
     "config-menu.text-color.blue": "Azul",
-    "config-menu.outline-color-type.label": "Outline Color Type",
-    "config-menu.outline-color-type.fixed": "Fixed color",
-    "config-menu.outline-color-type.inverted": "Inverse of text",
-    "config-menu.outline-color.red": "Red",
-    "config-menu.outline-color.green": "Green",
-    "config-menu.outline-color.blue": "Blue"
+    "config-menu.outline-color-type.label": "Tipo de Cor do Contorno",
+    "config-menu.outline-color-type.fixed": "Cor fixa",
+    "config-menu.outline-color-type.inverted": "Inverso do texto",
+    "config-menu.outline-color.red": "Vermelho",
+    "config-menu.outline-color.green": "Verde",
+    "config-menu.outline-color.blue": "Azul",
+    "config-menu.preview-text": "Exemplo"
 }

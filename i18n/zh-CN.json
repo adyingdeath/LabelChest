@@ -18,5 +18,6 @@
     "config-menu.outline-color-type.inverted": "与文字颜色相反",
     "config-menu.outline-color.red": "红色",
     "config-menu.outline-color.green": "绿色",
-    "config-menu.outline-color.blue": "蓝色"
+    "config-menu.outline-color.blue": "蓝色",
+    "config-menu.preview-text": "预览文本"
 }

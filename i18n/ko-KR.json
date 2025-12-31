@@ -13,10 +13,11 @@
     "config-menu.text-color.red": "빨강",
     "config-menu.text-color.green": "초록",
     "config-menu.text-color.blue": "파랑",
-    "config-menu.outline-color-type.label": "Outline Color Type",
-    "config-menu.outline-color-type.fixed": "Fixed color",
-    "config-menu.outline-color-type.inverted": "Inverse of text",
-    "config-menu.outline-color.red": "Red",
-    "config-menu.outline-color.green": "Green",
-    "config-menu.outline-color.blue": "Blue"
+    "config-menu.outline-color-type.label": "윤곽선 색상 유형",
+    "config-menu.outline-color-type.fixed": "고정 색상",
+    "config-menu.outline-color-type.inverted": "텍스트 색상 반전",
+    "config-menu.outline-color.red": "빨강",
+    "config-menu.outline-color.green": "초록",
+    "config-menu.outline-color.blue": "파랑",
+    "config-menu.preview-text": "예시 라벨"
 }

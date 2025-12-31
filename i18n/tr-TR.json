@@ -13,10 +13,11 @@
     "config-menu.text-color.red": "Kırmızı",
     "config-menu.text-color.green": "Yeşil",
     "config-menu.text-color.blue": "Mavi",
-    "config-menu.outline-color-type.label": "Outline Color Type",
-    "config-menu.outline-color-type.fixed": "Fixed color",
-    "config-menu.outline-color-type.inverted": "Inverse of text",
-    "config-menu.outline-color.red": "Red",
-    "config-menu.outline-color.green": "Green",
-    "config-menu.outline-color.blue": "Blue"
+    "config-menu.outline-color-type.label": "Kenar Rengi Türü",
+    "config-menu.outline-color-type.fixed": "Sabit renk",
+    "config-menu.outline-color-type.inverted": "Yazının tersi",
+    "config-menu.outline-color.red": "Kırmızı",
+    "config-menu.outline-color.green": "Yeşil",
+    "config-menu.outline-color.blue": "Mavi",
+    "config-menu.preview-text": "Örnek"
 }

@@ -176,7 +176,7 @@ public class ConfigMenu : LOptionsPage {
         );
         chest.drawInMenu(b, chestPos, chestScale);
         SpriteBatchSwitcher.SwitchAntiAliasing(b);
-        ModEntry.WorldLabelRenderer.DrawLabel(b, chestPos + new Vector2(chestWidth / 2), "example", chest);
+        ModEntry.WorldLabelRenderer.DrawLabel(b, chestPos + new Vector2(chestWidth / 2), I18n.ConfigMenu_PreviewText(), chest);
         SpriteBatchSwitcher.SwitchDefault(b);
 
         // Draw options
