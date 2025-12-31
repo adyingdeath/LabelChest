@@ -116,7 +116,19 @@ namespace LabelChest {
 
         private void OnConfigButtonClicked() {
             Helper.Input.Suppress(SButton.MouseLeft);
-            Game1.activeClickableMenu = new ConfigMenu();
+            ConfigMenuTranslation translation = new(
+                Helper.Translation.Get("config-menu.font-size"),
+                Helper.Translation.Get("config-menu.text-color-type"),
+                Helper.Translation.Get("config-menu.text-color-type.fixed"),
+                Helper.Translation.Get("config-menu.text-color-type.inverted"),
+                Helper.Translation.Get("config-menu.text-color-type.follow-box"),
+                Helper.Translation.Get("config-menu.text-color.red"),
+                Helper.Translation.Get("config-menu.text-color.green"),
+                Helper.Translation.Get("config-menu.text-color.blue"),
+                Helper.Translation.Get("config-menu.button.config"),
+                Helper.Translation.Get("config-menu.title")
+            );
+            Game1.activeClickableMenu = new ConfigMenu(translation);
         }
 
         private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e) {

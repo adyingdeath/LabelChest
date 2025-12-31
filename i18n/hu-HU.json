@@ -2,5 +2,15 @@
     "set-label-title": "Láda címke",
     "set-label-button": "Címke beállítása",
     "cancel-button": "Törlés",
-    "ok-button": "OK"
+    "ok-button": "OK",
+    "config-menu.font-size": "Betűméret",
+    "config-menu.text-color-type": "Szöveg színtípus",
+    "config-menu.text-color-type.fixed": "Rögzített szín",
+    "config-menu.text-color-type.inverted": "Doboz fordítottja",
+    "config-menu.text-color-type.follow-box": "Dobozhoz hasonló",
+    "config-menu.text-color.red": "Piros",
+    "config-menu.text-color.green": "Zöld",
+    "config-menu.text-color.blue": "Kék",
+    "config-menu.button.config": "Beállítások",
+    "config-menu.title": "Láda Címke Beállítások"
 }

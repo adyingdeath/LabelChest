@@ -2,5 +2,15 @@
     "set-label-title": "상자 라벨",
     "set-label-button": "라벨 설정",
     "cancel-button": "지우기",
-    "ok-button": "확인"
+    "ok-button": "확인",
+    "config-menu.font-size": "글꼴 크기",
+    "config-menu.text-color-type": "텍스트 색상 유형",
+    "config-menu.text-color-type.fixed": "고정 색상",
+    "config-menu.text-color-type.inverted": "상자 색상 반전",
+    "config-menu.text-color-type.follow-box": "상자 색상과 동일",
+    "config-menu.text-color.red": "빨강",
+    "config-menu.text-color.green": "초록",
+    "config-menu.text-color.blue": "파랑",
+    "config-menu.button.config": "설정",
+    "config-menu.title": "상자 라벨 설정"
 }

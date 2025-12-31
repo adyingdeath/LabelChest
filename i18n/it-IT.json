@@ -2,5 +2,15 @@
     "set-label-title": "Etichetta baule",
     "set-label-button": "Imposta etichetta",
     "cancel-button": "Cancella",
-    "ok-button": "OK"
+    "ok-button": "OK",
+    "config-menu.font-size": "Dimensione carattere",
+    "config-menu.text-color-type": "Tipo colore testo",
+    "config-menu.text-color-type.fixed": "Colore fisso",
+    "config-menu.text-color-type.inverted": "Inverso della scatola",
+    "config-menu.text-color-type.follow-box": "Uguale alla scatola",
+    "config-menu.text-color.red": "Rosso",
+    "config-menu.text-color.green": "Verde",
+    "config-menu.text-color.blue": "Blu",
+    "config-menu.button.config": "Configurazione",
+    "config-menu.title": "Impostazioni Etichette Bauli"
 }

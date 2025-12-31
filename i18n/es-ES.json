@@ -2,5 +2,15 @@
     "set-label-title": "Etiqueta del cofre",
     "set-label-button": "Poner etiqueta",
     "cancel-button": "Borrar",
-    "ok-button": "Aceptar"
+    "ok-button": "Aceptar",
+    "config-menu.font-size": "Tamaño de fuente",
+    "config-menu.text-color-type": "Tipo de color de texto",
+    "config-menu.text-color-type.fixed": "Color fijo",
+    "config-menu.text-color-type.inverted": "Inverso de la caja",
+    "config-menu.text-color-type.follow-box": "Igual que la caja",
+    "config-menu.text-color.red": "Rojo",
+    "config-menu.text-color.green": "Verde",
+    "config-menu.text-color.blue": "Azul",
+    "config-menu.button.config": "Configuración",
+    "config-menu.title": "Configuración de Etiquetas de Cofres"
 }

@@ -2,5 +2,15 @@
     "set-label-title": "箱子名称",
     "set-label-button": "设置名称",
     "cancel-button": "清除",
-    "ok-button": "确定"
+    "ok-button": "确定",
+    "config-menu.font-size": "字体大小",
+    "config-menu.text-color-type": "文本颜色类型",
+    "config-menu.text-color-type.fixed": "固定颜色",
+    "config-menu.text-color-type.inverted": "与箱子颜色相反",
+    "config-menu.text-color-type.follow-box": "与箱子颜色相同",
+    "config-menu.text-color.red": "红色",
+    "config-menu.text-color.green": "绿色",
+    "config-menu.text-color.blue": "蓝色",
+    "config-menu.button.config": "设置",
+    "config-menu.title": "箱子标签设置"
 }

@@ -2,5 +2,15 @@
     "set-label-title": "Set Chest Label",
     "set-label-button": "Set Label",
     "cancel-button": "Clear",
-    "ok-button": "OK"
+    "ok-button": "OK",
+    "config-menu.font-size": "Font Size",
+    "config-menu.text-color-type": "Text Color Type",
+    "config-menu.text-color-type.fixed": "Fixed color",
+    "config-menu.text-color-type.inverted": "Inverse of box",
+    "config-menu.text-color-type.follow-box": "Same as box",
+    "config-menu.text-color.red": "Red",
+    "config-menu.text-color.green": "Green",
+    "config-menu.text-color.blue": "Blue",
+    "config-menu.button.config": "Config",
+    "config-menu.title": "Label Chest Settings"
 }

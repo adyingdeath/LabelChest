@@ -2,5 +2,15 @@
     "set-label-title": "Метка сундука",
     "set-label-button": "Задать метку",
     "cancel-button": "Очистить",
-    "ok-button": "OK"
+    "ok-button": "OK",
+    "config-menu.font-size": "Размер шрифта",
+    "config-menu.text-color-type": "Тип цвета текста",
+    "config-menu.text-color-type.fixed": "Фиксированный цвет",
+    "config-menu.text-color-type.inverted": "Инвертированный цвет ящика",
+    "config-menu.text-color-type.follow-box": "Как у ящика",
+    "config-menu.text-color.red": "Красный",
+    "config-menu.text-color.green": "Зеленый",
+    "config-menu.text-color.blue": "Синий",
+    "config-menu.button.config": "Настройки",
+    "config-menu.title": "Настройки Меток Сундуков"
 }

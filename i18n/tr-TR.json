@@ -2,5 +2,15 @@
     "set-label-title": "Sandık Etiketi",
     "set-label-button": "Etiketle",
     "cancel-button": "Temizle",
-    "ok-button": "Tamam"
+    "ok-button": "Tamam",
+    "config-menu.font-size": "Yazı Boyutu",
+    "config-menu.text-color-type": "Yazı Rengi Türü",
+    "config-menu.text-color-type.fixed": "Sabit renk",
+    "config-menu.text-color-type.inverted": "Kutunun tersi",
+    "config-menu.text-color-type.follow-box": "Kutu ile aynı",
+    "config-menu.text-color.red": "Kırmızı",
+    "config-menu.text-color.green": "Yeşil",
+    "config-menu.text-color.blue": "Mavi",
+    "config-menu.button.config": "Ayarlar",
+    "config-menu.title": "Sandık Etiketi Ayarları"
 }

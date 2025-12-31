@@ -59,8 +59,9 @@ namespace LabelChest.UI {
             );
             
             if (isHover) {
-                // Tooltip
-                IClickableMenu.drawHoverText(b, "Config", Game1.smallFont);
+                // Tooltip with translation
+                string tooltip = _translations.Get("config-menu.button.config");
+                IClickableMenu.drawHoverText(b, tooltip, Game1.smallFont);
             }
 
             // Redraw mouse cursor

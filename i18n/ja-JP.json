@@ -2,5 +2,15 @@
     "set-label-title": "箱のラベル",
     "set-label-button": "ラベル設定",
     "cancel-button": "クリア",
-    "ok-button": "OK"
+    "ok-button": "OK",
+    "config-menu.font-size": "フォントサイズ",
+    "config-menu.text-color-type": "文字色タイプ",
+    "config-menu.text-color-type.fixed": "固定色",
+    "config-menu.text-color-type.inverted": "箱の色の反対",
+    "config-menu.text-color-type.follow-box": "箱の色と同じ",
+    "config-menu.text-color.red": "赤",
+    "config-menu.text-color.green": "緑",
+    "config-menu.text-color.blue": "青",
+    "config-menu.button.config": "設定",
+    "config-menu.title": "箱ラベル設定"
 }

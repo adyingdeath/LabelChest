@@ -2,5 +2,15 @@
     "set-label-title": "Étiquette du coffre",
     "set-label-button": "Définir l'étiquette",
     "cancel-button": "Effacer",
-    "ok-button": "OK"
+    "ok-button": "OK",
+    "config-menu.font-size": "Taille de police",
+    "config-menu.text-color-type": "Type de couleur de texte",
+    "config-menu.text-color-type.fixed": "Couleur fixe",
+    "config-menu.text-color-type.inverted": "Inverse de la boîte",
+    "config-menu.text-color-type.follow-box": "Identique à la boîte",
+    "config-menu.text-color.red": "Rouge",
+    "config-menu.text-color.green": "Vert",
+    "config-menu.text-color.blue": "Bleu",
+    "config-menu.button.config": "Configuration",
+    "config-menu.title": "Paramètres d'Étiquettes de Coffres"
 }

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using StardewModdingAPI;
 
 namespace LabelChest.UI;
 
@@ -90,6 +91,19 @@ class OptionsManager {
     }
 }
 
+public record ConfigMenuTranslation(
+    string FontSize = "",
+    string TextColorType = "",
+    string TextColorTypeFixed = "",
+    string TextColorTypeInverted = "",
+    string TextColorTypeFollowBox = "",
+    string TextColorRed = "",
+    string TextColorGreen = "",
+    string TextColorBlue = "",
+    string ButtonConfig = "",
+    string Title = ""
+);
+
 public class ConfigMenu : OptionsPage {
     private const int WIDTH = 900;
     private const int HEIGHT = 600;
@@ -101,7 +115,10 @@ public class ConfigMenu : OptionsPage {
         ModEntry.CacheManager.ClearCache();
     });
     private readonly OptionsManager optionsManager;
-    public ConfigMenu() : base((Game1.viewport.Width - WIDTH) / 2, (Game1.viewport.Height - HEIGHT) / 2, WIDTH, HEIGHT) {
+    private readonly ConfigMenuTranslation translation;
+    
+    public ConfigMenu(ConfigMenuTranslation translation) : base((Game1.viewport.Width - WIDTH) / 2, (Game1.viewport.Height - HEIGHT) / 2, WIDTH, HEIGHT) {
+        this.translation = translation;
         optionsManager = new((options) => {
             this.options = options;
         });
@@ -109,7 +126,7 @@ public class ConfigMenu : OptionsPage {
         optionsManager
         .Add(
             // Font Size
-            new ConfigSlider("Font Size", (value) => {
+            new ConfigSlider(translation.FontSize, (value) => {
                 if (ModEntry.Config.FontSize == value) return;
                 ModEntry.Config.FontSize = value;
                 debouncer.Invoke();
@@ -118,20 +135,20 @@ public class ConfigMenu : OptionsPage {
         )
         .Add(
             // Text Color Type
-            new ConfigDropDown("Text Color Type", (value) => {
+            new ConfigDropDown(translation.TextColorType, (value) => {
                 if (value == "Fixed") {
                     optionsManager.Display("text-color-fixed");
                 } else {
                     optionsManager.Hide("text-color-fixed");
                 }
-            }).AddOption("Fixed", "Fixed color")
-            .AddOption("Inverted", "Inverse of box")
-            .AddOption("FollowBox", "Same as box"),
+            }).AddOption("Fixed", translation.TextColorTypeFixed)
+            .AddOption("Inverted", translation.TextColorTypeInverted)
+            .AddOption("FollowBox", translation.TextColorTypeFollowBox),
             "default"
         )
         .Add(
-            // Text Color Type
-            new ConfigSlider("Red", (value) => {
+            // Red
+            new ConfigSlider(translation.TextColorRed, (value) => {
                 Color color = ModEntry.Config.TextColor;
                 color.R = (byte)value;
                 ModEntry.Config.TextColor = color;
@@ -140,8 +157,8 @@ public class ConfigMenu : OptionsPage {
             "text-color-fixed"
         )
         .Add(
-            // Text Color Type
-            new ConfigSlider("Green", (value) => {
+            // Green
+            new ConfigSlider(translation.TextColorGreen, (value) => {
                 Color color = ModEntry.Config.TextColor;
                 color.G = (byte)value;
                 ModEntry.Config.TextColor = color;
@@ -150,8 +167,8 @@ public class ConfigMenu : OptionsPage {
             "text-color-fixed"
         )
         .Add(
-            // Text Color Type
-            new ConfigSlider("Blue", (value) => {
+            // Blue
+            new ConfigSlider(translation.TextColorBlue, (value) => {
                 Color color = ModEntry.Config.TextColor;
                 color.B = (byte)value;
                 ModEntry.Config.TextColor = color;
