@@ -1,25 +1,24 @@
-using LabelChest.UI.Components;
 using LabelChest.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.Menus;
 using StardewValley.Objects;
-using StardewModdingAPI;
+using LabelChest.UI.Menus;
+using StardewValley.Menus;
 
 namespace LabelChest.UI;
 
 class OptionsManager {
-    public List<OptionsElement> options = new();
+    public List<LComponent> options = new();
     public List<string> optionsTag = new();
     public Dictionary<string, bool> tagVisibility = new();
-    private Action<List<OptionsElement>> onVisibleOptionsChanged;
+    private Action<List<LComponent>> onVisibleOptionsChanged;
 
-    public OptionsManager(Action<List<OptionsElement>> updateAction) {
+    public OptionsManager(Action<List<LComponent>> updateAction) {
         onVisibleOptionsChanged = updateAction;
     }
 
-    public void SetUpdateCallback(Action<List<OptionsElement>> updateAction) {
+    public void SetUpdateCallback(Action<List<LComponent>> updateAction) {
         onVisibleOptionsChanged = updateAction;
     }
 
@@ -29,7 +28,7 @@ class OptionsManager {
         }
     }
 
-    public OptionsManager Add(OptionsElement option, string tag) {
+    public OptionsManager Add(LComponent option, string tag) {
         options.Add(option);
         optionsTag.Add(tag);
         if (!tagVisibility.ContainsKey(tag)) {
@@ -86,7 +85,7 @@ class OptionsManager {
         return tagVisibility[tag];
     }
 
-    public List<OptionsElement> GetVisibleOptions() {
+    public List<LComponent> GetVisibleOptions() {
         return options.Where((option, index) => IsVisible(index)).ToList();
     }
 }
@@ -104,7 +103,7 @@ public record ConfigMenuTranslation(
     string Title = ""
 );
 
-public class ConfigMenu : OptionsPage {
+public class ConfigMenu : LOptionsPage {
     private const int WIDTH = 900;
     private const int HEIGHT = 600;
     private const int PADDING_X = 20;
@@ -126,7 +125,7 @@ public class ConfigMenu : OptionsPage {
         optionsManager
         .Add(
             // Font Size
-            new ConfigSlider(translation.FontSize, (value) => {
+            new LSlider(translation.FontSize, (value) => {
                 if (ModEntry.Config.FontSize == value) return;
                 ModEntry.Config.FontSize = value;
                 debouncer.Invoke();
@@ -135,7 +134,7 @@ public class ConfigMenu : OptionsPage {
         )
         .Add(
             // Text Color Type
-            new ConfigDropDown(translation.TextColorType, (value) => {
+            new LSelect(translation.TextColorType, (value) => {
                 if (value == "Fixed") {
                     optionsManager.Display("text-color-fixed");
                 } else {
@@ -148,7 +147,7 @@ public class ConfigMenu : OptionsPage {
         )
         .Add(
             // Red
-            new ConfigSlider(translation.TextColorRed, (value) => {
+            new LSlider(translation.TextColorRed, (value) => {
                 Color color = ModEntry.Config.TextColor;
                 color.R = (byte)value;
                 ModEntry.Config.TextColor = color;
@@ -158,7 +157,7 @@ public class ConfigMenu : OptionsPage {
         )
         .Add(
             // Green
-            new ConfigSlider(translation.TextColorGreen, (value) => {
+            new LSlider(translation.TextColorGreen, (value) => {
                 Color color = ModEntry.Config.TextColor;
                 color.G = (byte)value;
                 ModEntry.Config.TextColor = color;
@@ -168,7 +167,7 @@ public class ConfigMenu : OptionsPage {
         )
         .Add(
             // Blue
-            new ConfigSlider(translation.TextColorBlue, (value) => {
+            new LSlider(translation.TextColorBlue, (value) => {
                 Color color = ModEntry.Config.TextColor;
                 color.B = (byte)value;
                 ModEntry.Config.TextColor = color;
