@@ -15,7 +15,6 @@ namespace LabelChest {
     public class ModEntry : Mod {
         public const string MAIN_TEXTURE_PATH = "adyingdeath/LabelChest/Texture";
         public static ModConfig Config { get; private set; } = null!;
-        public static LabelCacheManager CacheManager { get; private set; } = null!;
         private MenuLabelButton _menuButton = null!;
         private ConfigButton _configButton = null!;
         private ChestMenuButtonManager _chestMenuButtonManager = null!;
@@ -26,22 +25,16 @@ namespace LabelChest {
             Config = Helper.ReadConfig<ModConfig>();
 
             // Initialize managers
-            CacheManager = new LabelCacheManager(helper.Translation.LocaleEnum);
             _menuButton = new MenuLabelButton(Helper.Translation, OnLabelButtonClicked);
             _configButton = new ConfigButton(Helper.Translation, OnConfigButtonClicked);
             _chestMenuButtonManager = new ChestMenuButtonManager(_menuButton, _configButton);
-            WorldLabelRenderer = new WorldLabelRenderer(CacheManager);
+            WorldLabelRenderer = new WorldLabelRenderer();
 
             // Register events
             helper.Events.Display.RenderedWorld += OnRenderedWorld;
             helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
-            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.Content.AssetRequested += OnAssetRequested;
-
-            // Cleanup cache on load/exit to free VRAM
-            helper.Events.GameLoop.SaveLoaded += OnCleanupCache;
-            helper.Events.GameLoop.ReturnedToTitle += OnCleanupCache;
         }
 
         public static void Log(string message) {
@@ -58,10 +51,6 @@ namespace LabelChest {
                     return Texture2D.FromStream(Game1.graphics.GraphicsDevice, stream);
                 }, AssetLoadPriority.Exclusive);
             }
-        }
-
-        private void OnCleanupCache(object? sender, EventArgs e) {
-            CacheManager.ClearCache();
         }
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e) {
@@ -156,19 +145,27 @@ namespace LabelChest {
             _configButton.Draw(e.SpriteBatch, menu);
         }
 
-        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e) {
-            CacheManager.ProcessPendingLabels(Game1.graphics.GraphicsDevice);
-        }
-
         private void OnRenderedWorld(object? sender, RenderedWorldEventArgs e) {
             if (!Context.IsWorldReady)
                 return;
+
+            // Restart SpriteBatch with our settings for anti-aliasing.
+            e.SpriteBatch.End();
+            e.SpriteBatch.Begin(
+                sortMode: SpriteSortMode.Deferred,
+                blendState: BlendState.AlphaBlend,
+                samplerState: SamplerState.LinearClamp,
+                depthStencilState: null,
+                rasterizerState: null,
+                effect: null,
+                transformMatrix: null
+            );
 
             foreach (var pair in Game1.currentLocation.Objects.Pairs) {
                 if (pair.Value is Chest chest && ChestLabelManager.HasLabel(chest)) {
                     string labelText = ChestLabelManager.GetLabel(chest);
                     if (!string.IsNullOrWhiteSpace(labelText)) {
-                        WorldLabelRenderer.DrawLabelWithTile(e.SpriteBatch, pair.Key, labelText);
+                        WorldLabelRenderer.DrawLabelWithTile(e.SpriteBatch, pair.Key, labelText, chest);
                     }
                 }
             }
@@ -185,7 +182,7 @@ namespace LabelChest {
 
         protected override void Dispose(bool disposing) {
             if (disposing) {
-                CacheManager?.Dispose();
+                //CacheManager?.Dispose();
             }
             base.Dispose(disposing);
         }

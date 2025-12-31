@@ -111,9 +111,6 @@ public class ConfigMenu : IClickableMenu {
     private const int PADDING_Y = 20;
     private const int SPACE_Y = 8;
     private const int PREVIEW_WIDTH = 100;
-    private Debouncer debouncer = new Debouncer(TimeSpan.FromMilliseconds(50), () => {
-        ModEntry.CacheManager.ClearCache();
-    });
     private readonly OptionsManager optionsManager;
     private readonly ConfigMenuTranslation translation;
     private readonly LOptionsPage optionsPage;
@@ -136,20 +133,34 @@ public class ConfigMenu : IClickableMenu {
             new LSlider(translation.FontSize, (value) => {
                 if (ModEntry.Config.FontSize == value) return;
                 ModEntry.Config.FontSize = value;
-                debouncer.Invoke();
             }).Min(0.2f).Max(3.0f).DefaultValue(ModEntry.Config.FontSize)
         )
         .Add(
             // Text Color Type
             new LSelect(translation.TextColorType, (value) => {
-                if (value == "Fixed") {
-                    optionsManager.Display("text-color-fixed");
-                } else {
-                    optionsManager.Hide("text-color-fixed");
+                switch(value) {
+                    case "Fixed":
+                        optionsManager.Display("text-color-fixed");
+                        ModEntry.Config.TextColorType = TextColorType.Fixed;
+                        break;
+                    case "Inverted":
+                        optionsManager.Hide("text-color-fixed");
+                        ModEntry.Config.TextColorType = TextColorType.Inverted;
+                        break;
+                    case "FollowBox":
+                        optionsManager.Hide("text-color-fixed");
+                        ModEntry.Config.TextColorType = TextColorType.FollowBox;
+                        break;
                 }
             }).AddOption("Fixed", translation.TextColorTypeFixed)
             .AddOption("Inverted", translation.TextColorTypeInverted)
             .AddOption("FollowBox", translation.TextColorTypeFollowBox)
+            .DefaultValue(ModEntry.Config.TextColorType switch {
+                TextColorType.Fixed => 0,
+                TextColorType.Inverted => 1,
+                TextColorType.FollowBox => 2,
+                _ => 0
+            })
         )
         .Add(
             // Red
@@ -157,7 +168,6 @@ public class ConfigMenu : IClickableMenu {
                 Color color = ModEntry.Config.TextColor;
                 color.R = (byte)value;
                 ModEntry.Config.TextColor = color;
-                debouncer.Invoke();
             }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.R),
             "text-color-fixed"
         )
@@ -167,7 +177,6 @@ public class ConfigMenu : IClickableMenu {
                 Color color = ModEntry.Config.TextColor;
                 color.G = (byte)value;
                 ModEntry.Config.TextColor = color;
-                debouncer.Invoke();
             }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.G),
             "text-color-fixed"
         )
@@ -177,7 +186,6 @@ public class ConfigMenu : IClickableMenu {
                 Color color = ModEntry.Config.TextColor;
                 color.B = (byte)value;
                 ModEntry.Config.TextColor = color;
-                debouncer.Invoke();
             }).Min(0).Max(255).DefaultValue(ModEntry.Config.TextColor.B),
             "text-color-fixed"
         )
@@ -211,7 +219,7 @@ public class ConfigMenu : IClickableMenu {
             yPositionOnScreen + height / 2 - chestWidth / 2
         );
         chest.drawInMenu(b, chestPos, chestScale);
-        ModEntry.WorldLabelRenderer.DrawLabel(b, chestPos + new Vector2(chestWidth / 2), "example");
+        ModEntry.WorldLabelRenderer.DrawLabel(b, chestPos + new Vector2(chestWidth / 2), "example", chest);
 
         // Draw options
         optionsPage.draw(b);

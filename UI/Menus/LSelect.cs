@@ -47,6 +47,11 @@ public class LSelect : LComponent
         return this;
     }
 
+    public LSelect DefaultValue(int selectedOption) {
+        this.selectedOption = selectedOption;
+        return this;
+    }
+
     public virtual void RecalculateBounds()
     {
         foreach (string dropDownDisplayOption in dropDownDisplayOptions)
