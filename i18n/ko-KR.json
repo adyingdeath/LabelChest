@@ -19,5 +19,6 @@
     "config-menu.outline-color.red": "빨강",
     "config-menu.outline-color.green": "초록",
     "config-menu.outline-color.blue": "파랑",
-    "config-menu.preview-text": "예시 라벨"
+    "config-menu.preview-text": "예시 라벨",
+    "config-menu.reset": "초기화"
 }

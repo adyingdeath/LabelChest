@@ -11,8 +11,8 @@ namespace LabelChest.UI;
 public class ConfigMenu : LOptionsPage {
     private const int WIDTH = 900;
     private const int HEIGHT = 600;
-    private const int PADDING_X = 20;
-    private const int PADDING_Y = 20;
+    private const int PADDING_X = 30;
+    private const int PADDING_Y = 30;
     private const int SPACE_Y = 8;
     private const int PREVIEW_WIDTH = 100;
     private readonly OptionsManager optionsManager;
@@ -29,6 +29,12 @@ public class ConfigMenu : LOptionsPage {
         });
 
         optionsManager
+        .Add(
+            new LButton(I18n.ConfigMenu_Reset(), () => {
+                ModEntry.Config.ResetToDefaults();
+                ApplyUIValues();
+            })
+        )
         .Add(
             // Font Size
             new LSlider(I18n.ConfigMenu_FontSize(), (value) => {
@@ -123,6 +129,37 @@ public class ConfigMenu : LOptionsPage {
         );
 
         // Apply initial visibility based on default values
+        ApplyUIValues();
+
+        options = optionsManager.GetVisibleOptions();
+        upperRightCloseButton.setPosition(
+            xPositionOnScreen - PREVIEW_WIDTH - PADDING_X + WIDTH - 36,
+            yPositionOnScreen - PADDING_Y - 36
+        );
+    }
+
+    private void ApplyUIValues() {
+        var allOptions = optionsManager.options;
+        // Font Size slider (index 1)
+        if (allOptions[1] is LSlider fontSizeSlider) fontSizeSlider.SetValue(ModEntry.Config.FontSize);
+        // Text Color Type select (index 2)
+        if (allOptions[2] is LSelect textColorTypeSelect) textColorTypeSelect.SetValue(ModEntry.Config.TextColorType.ToString());
+        // Red slider (index 3)
+        if (allOptions[3] is LSlider redSlider) redSlider.SetValue(ModEntry.Config.TextColor.R);
+        // Green slider (index 4)
+        if (allOptions[4] is LSlider greenSlider) greenSlider.SetValue(ModEntry.Config.TextColor.G);
+        // Blue slider (index 5)
+        if (allOptions[5] is LSlider blueSlider) blueSlider.SetValue(ModEntry.Config.TextColor.B);
+        // Outline Color Type select (index 6)
+        if (allOptions[6] is LSelect outlineColorTypeSelect) outlineColorTypeSelect.SetValue(ModEntry.Config.OutlineColorType.ToString());
+        // Outline Red slider (index 7)
+        if (allOptions[7] is LSlider outlineRedSlider) outlineRedSlider.SetValue(ModEntry.Config.OutlineColor.R);
+        // Outline Green slider (index 8)
+        if (allOptions[8] is LSlider outlineGreenSlider) outlineGreenSlider.SetValue(ModEntry.Config.OutlineColor.G);
+        // Outline Blue slider (index 9)
+        if (allOptions[9] is LSlider outlineBlueSlider) outlineBlueSlider.SetValue(ModEntry.Config.OutlineColor.B);
+
+        // Update visibility
         switch(ModEntry.Config.TextColorType) {
             case TextColorType.Fixed:
                 optionsManager.Display("text-color-fixed");
@@ -141,8 +178,6 @@ public class ConfigMenu : LOptionsPage {
                 optionsManager.Hide("outline-color-fixed");
                 break;
         }
-
-        options = optionsManager.GetVisibleOptions();
     }
 
     public override void draw(SpriteBatch b) {

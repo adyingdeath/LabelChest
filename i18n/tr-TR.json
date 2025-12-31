@@ -19,5 +19,6 @@
     "config-menu.outline-color.red": "Kırmızı",
     "config-menu.outline-color.green": "Yeşil",
     "config-menu.outline-color.blue": "Mavi",
-    "config-menu.preview-text": "Örnek"
+    "config-menu.preview-text": "Örnek",
+    "config-menu.reset": "Sıfırla"
 }

@@ -27,6 +27,10 @@ public class LCheckbox : LComponent
         labelOffset.X = bounds.Width + 10;
     }
 
+    public void SetValue(bool value) {
+        isChecked = value;
+    }
+
     public override void receiveLeftClick(int x, int y)
     {
         if (!greyedOut)

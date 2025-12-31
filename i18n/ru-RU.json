@@ -19,5 +19,6 @@
     "config-menu.outline-color.red": "Красный",
     "config-menu.outline-color.green": "Зеленый",
     "config-menu.outline-color.blue": "Синий",
-    "config-menu.preview-text": "Пример"
+    "config-menu.preview-text": "Пример",
+    "config-menu.reset": "Сброс"
 }

@@ -19,5 +19,6 @@
     "config-menu.outline-color.red": "赤",
     "config-menu.outline-color.green": "緑",
     "config-menu.outline-color.blue": "青",
-    "config-menu.preview-text": "表示例"
+    "config-menu.preview-text": "表示例",
+    "config-menu.reset": "リセット"
 }

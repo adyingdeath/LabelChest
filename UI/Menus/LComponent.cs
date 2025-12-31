@@ -7,10 +7,8 @@ using StardewValley.Menus;
 
 namespace LabelChest.UI.Menus;
 
-public class LComponent : IScreenReadable
-{
-    public enum Style
-    {
+public class LComponent : IScreenReadable {
+    public enum Style {
         Default,
         OptionLabel
     }
@@ -37,21 +35,17 @@ public class LComponent : IScreenReadable
 
     public bool ScreenReaderIgnore { get; set; }
 
-    public LComponent(string label)
-    {
+    public LComponent(string label) {
         this.label = label;
         bounds = new Rectangle(32, 16, 36, 36);
     }
 
-    public LComponent(string label, int x, int y, int width, int height)
-    {
-        if (x == -1)
-        {
+    public LComponent(string label, int x, int y, int width, int height) {
+        if (x == -1) {
             x = 32;
         }
 
-        if (y == -1)
-        {
+        if (y == -1) {
             y = 16;
         }
 
@@ -59,8 +53,7 @@ public class LComponent : IScreenReadable
         this.label = label;
     }
 
-    public LComponent(string label, Rectangle bounds)
-    {
+    public LComponent(string label, Rectangle bounds) {
         this.label = label;
         this.bounds = bounds;
     }
@@ -76,8 +69,7 @@ public class LComponent : IScreenReadable
     //
     //   y:
     //     The pixel Y coordinate that was clicked.
-    public virtual void receiveLeftClick(int x, int y)
-    {
+    public virtual void receiveLeftClick(int x, int y) {
     }
 
     //
@@ -92,8 +84,7 @@ public class LComponent : IScreenReadable
     //
     //   y:
     //     The cursor's current pixel Y coordinate.
-    public virtual void leftClickHeld(int x, int y)
-    {
+    public virtual void leftClickHeld(int x, int y) {
     }
 
     //
@@ -107,8 +98,7 @@ public class LComponent : IScreenReadable
     //
     //   y:
     //     The cursor's current pixel Y coordinate.
-    public virtual void leftClickReleased(int x, int y)
-    {
+    public virtual void leftClickReleased(int x, int y) {
     }
 
     //
@@ -118,8 +108,10 @@ public class LComponent : IScreenReadable
     // Parameters:
     //   key:
     //     The keyboard button that was pressed.
-    public virtual void receiveKeyPress(Keys key)
-    {
+    public virtual void receiveKeyPress(Keys key) {
+    }
+
+    public void resetValue() {
     }
 
     //
@@ -138,10 +130,8 @@ public class LComponent : IScreenReadable
     //
     //   context:
     //     The menu which contains this element, if applicable.
-    public virtual void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
-    {
-        if (style == Style.OptionLabel)
-        {
+    public virtual void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null) {
+        if (style == Style.OptionLabel) {
             Utility.drawTextWithShadow(b, label, Game1.dialogueFont, new Vector2(slotX + bounds.X + (int)labelOffset.X, slotY + bounds.Y + (int)labelOffset.Y + 12), greyedOut ? (Game1.textColor * 0.33f) : Game1.textColor, 1f, 0.1f);
             return;
         }
@@ -150,12 +140,10 @@ public class LComponent : IScreenReadable
         int num2 = slotY + bounds.Y + (int)labelOffset.Y;
         string text = label;
         SpriteFont spriteFont = Game1.dialogueFont;
-        if (context != null)
-        {
+        if (context != null) {
             int num3 = context.width - 64;
             int xPositionOnScreen = context.xPositionOnScreen;
-            if (spriteFont.MeasureString(label).X + (float)num > (float)(num3 + xPositionOnScreen))
-            {
+            if (spriteFont.MeasureString(label).X + (float)num > (float)(num3 + xPositionOnScreen)) {
                 int width = num3 + xPositionOnScreen - num;
                 spriteFont = Game1.smallFont;
                 text = Game1.parseText(label, spriteFont, width);

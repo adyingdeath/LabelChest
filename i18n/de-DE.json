@@ -19,5 +19,6 @@
     "config-menu.outline-color.red": "Rot",
     "config-menu.outline-color.green": "Grün",
     "config-menu.outline-color.blue": "Blau",
-    "config-menu.preview-text": "Beschriftung"
+    "config-menu.preview-text": "Beschriftung",
+    "config-menu.reset": "Zurücksetzen"
 }

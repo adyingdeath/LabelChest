@@ -19,5 +19,6 @@
     "config-menu.outline-color.red": "Vermelho",
     "config-menu.outline-color.green": "Verde",
     "config-menu.outline-color.blue": "Azul",
-    "config-menu.preview-text": "Exemplo"
+    "config-menu.preview-text": "Exemplo",
+    "config-menu.reset": "Redefinir"
 }

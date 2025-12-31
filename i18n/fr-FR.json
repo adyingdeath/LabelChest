@@ -19,5 +19,6 @@
     "config-menu.outline-color.red": "Rouge",
     "config-menu.outline-color.green": "Vert",
     "config-menu.outline-color.blue": "Bleu",
-    "config-menu.preview-text": "Étiquette"
+    "config-menu.preview-text": "Étiquette",
+    "config-menu.reset": "Réinitialiser"
 }

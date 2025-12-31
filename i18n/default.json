@@ -19,5 +19,6 @@
     "config-menu.outline-color.red": "Red",
     "config-menu.outline-color.green": "Green",
     "config-menu.outline-color.blue": "Blue",
-    "config-menu.preview-text": "Example Label"
+    "config-menu.preview-text": "Example Label",
+    "config-menu.reset": "Reset"
 }

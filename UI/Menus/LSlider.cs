@@ -56,6 +56,10 @@ public class LSlider : LComponent {
         return this;
     }
 
+    public void SetValue(float value) {
+        this.value = value;
+    }
+
     public override void leftClickHeld(int x, int y) {
         if (!greyedOut) {
             base.leftClickHeld(x, y);

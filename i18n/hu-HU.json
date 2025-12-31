@@ -19,5 +19,6 @@
     "config-menu.outline-color.red": "Piros",
     "config-menu.outline-color.green": "Zöld",
     "config-menu.outline-color.blue": "Kék",
-    "config-menu.preview-text": "Minta szöveg"
+    "config-menu.preview-text": "Minta szöveg",
+    "config-menu.reset": "Visszaállítás"
 }
