@@ -48,6 +48,16 @@ namespace LabelChest {
             helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Content.AssetRequested += OnAssetRequested;
+
+            /* helper.Events.GameLoop.SaveLoaded += (object? sender, SaveLoadedEventArgs e) => {
+                // Give myself all kinds of chests for testing purposes.
+                if (!Context.IsMainPlayer) return;
+                Game1.player.addItemToInventory(new StardewValley.Objects.Chest(true, "BigChest"));
+                Game1.player.addItemToInventory(new StardewValley.Objects.Chest(true, "BigStoneChest"));
+                Game1.player.addItemToInventory(new StardewValley.Objects.Chest(true, "130"));
+                Game1.player.addItemToInventory(new StardewValley.Objects.Chest(true, "256"));
+                Game1.player.addItemToInventory(new StardewValley.Objects.Chest(true, "232"));
+            }; */
         }
 
         public static void Log(string message) {

@@ -61,6 +61,10 @@ namespace LabelChest.UI {
                 IClickableMenu.drawHoverText(b, I18n.ChestMenu_ButtonTitle(), Game1.smallFont);
             }
 
+            /* menu.allClickableComponents.ForEach((btn) => {
+                b.DrawString(Game1.smallFont, $"{btn.myID}", new Vector2(btn.bounds.Left, btn.bounds.Top), Color.Red, 0.0f, Vector2.Zero, 0.7f, SpriteEffects.None, 1.0f);
+            }); */
+
             // Redraw mouse cursor
             menu.drawMouse(b);
         }

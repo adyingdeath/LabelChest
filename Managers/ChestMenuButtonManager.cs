@@ -1,6 +1,7 @@
 using LabelChest.UI;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Menus;
 
 namespace LabelChest.Managers {
@@ -64,10 +65,25 @@ namespace LabelChest.Managers {
             /* [TODO]: The chest menu in Android is different from the one in PC,
             so slots in the first row of chest have wrong neighbors calculation.
             */
+            /* Different logic for different chests:
+             * * Chest
+             * * Stone Chest
+             * * Big Chest
+             * * Big Stone Chest
+             * * Junimo Chest
+             */
+            int upperIndex = menu.ItemsToGrabMenu.capacity switch {
+                9 => 53912, // Junimo Chest
+                36 => 53921, // Chest, Stone Chest
+                70 => 53923, // Big Chest, Big Stone Chest
+                _ => 53912
+            };
             menu.allClickableComponents.ForEach((component) => {
-                if (53910 <= component.myID && component.myID <= 53923) {
+                if (53910 <= component.myID && component.myID <= upperIndex) {
                     component.upNeighborID = menuLabelButton.myID;
                 } else if (4343 <= component.myID && component.myID <= 4363) {
+                    // If Android, skip color palette.
+                    if (Constants.TargetPlatform == GamePlatform.Android) return;
                     component.downNeighborID = menuLabelButton.myID;
                 }
             });
