@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Objects;
 using LabelChest.Managers;
+using static StardewValley.LocalizedContentManager;
 
 namespace LabelChest.Rendering {
     /// <summary>
@@ -10,11 +11,14 @@ namespace LabelChest.Rendering {
     /// </summary>
     public class WorldLabelRenderer {
         // Configuration constants
-        private const float BaseFontScale = 0.8f;
+        private static readonly float BaseFontScale = Game1.content.GetCurrentLanguage() switch {
+            LanguageCode.en => 0.64631576f,
+            LanguageCode.zh => 0.8f,
+            _ => 0.8f
+        };
+        private static float FontScale => BaseFontScale * ModEntry.Config.FontSize;
         private const int WorldMaxWidth = 70;
         private const int Padding = 20;
-
-        private float FontScale => BaseFontScale * ModEntry.Config.FontSize;
 
         /// <summary>
         /// Draws a label above a chest at the specified tile position.
