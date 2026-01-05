@@ -13,7 +13,17 @@ namespace LabelChest.Rendering {
         // Configuration constants
         private static readonly float BaseFontScale = Game1.content.GetCurrentLanguage() switch {
             LanguageCode.en => 0.64631576f,
+            LanguageCode.ru => 0.64631576f,
             LanguageCode.zh => 0.8f,
+            LanguageCode.de => 0.64631576f,
+            LanguageCode.pt => 0.64631576f,
+            LanguageCode.fr => 0.64631576f,
+            LanguageCode.es => 0.64631576f,
+            LanguageCode.ja => 0.736f,
+            LanguageCode.ko => 0.567456f,
+            LanguageCode.it => 0.64631576f,
+            LanguageCode.tr => 0.64631576f,
+            LanguageCode.hu => 0.64631576f,
             _ => 0.8f
         };
         private static float FontScale => BaseFontScale * ModEntry.Config.FontSize;
