@@ -19,8 +19,8 @@ public class ConfigMenu : LOptionsPage {
 
     public ConfigMenu() 
         : base(
-            (Game1.viewport.Width - WIDTH) / 2 + PREVIEW_WIDTH + PADDING_X,
-            (Game1.viewport.Height - HEIGHT) / 2 + PADDING_Y,
+            (Game1.uiViewport.Width - WIDTH) / 2 + PREVIEW_WIDTH + PADDING_X,
+            (Game1.uiViewport.Height - HEIGHT) / 2 + PADDING_Y,
             WIDTH - 2 * PADDING_X - PREVIEW_WIDTH,
             HEIGHT - 2 * PADDING_Y
         ) {
