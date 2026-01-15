@@ -6,6 +6,7 @@
     "config-menu.title": "Label Chest Settings",
     "config-menu.button.config": "Config",
     "config-menu.font-size": "Font Size",
+    "config-menu.hover-only": "Show Only On Mouse Hover",
     "config-menu.text-color-type.label": "Text Color Type",
     "config-menu.text-color-type.fixed": "Fixed color",
     "config-menu.text-color-type.inverted": "Inverse of box",

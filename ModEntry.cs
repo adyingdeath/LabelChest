@@ -155,7 +155,24 @@ namespace LabelChest {
             // Restart SpriteBatch with our settings for anti-aliasing.
             SpriteBatchSwitcher.SwitchAntiAliasing(e.SpriteBatch);
 
+            // Only enable hoverOnly when not on Android
+            bool hoverOnly = (
+                Config.HoverOnly &&
+                Constants.TargetPlatform != GamePlatform.Android
+            );
+
+            Vector2 minusOne = new(0, -1);
+
             foreach (var pair in Game1.currentLocation.Objects.Pairs) {
+                // Check if hover only mode is enabled
+                bool isMouseOn = (
+                    Game1.currentCursorTile == pair.Key ||
+                    Game1.currentCursorTile == pair.Key + minusOne
+                );
+                if (hoverOnly && !isMouseOn) {
+                    continue;
+                }
+
                 if (pair.Value is Chest chest && ChestLabelManager.HasLabel(chest)) {
                     string labelText = ChestLabelManager.GetLabel(chest);
                     if (!string.IsNullOrWhiteSpace(labelText)) {

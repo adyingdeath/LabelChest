@@ -6,6 +6,7 @@
     "config-menu.title": "Sandık Etiketi Ayarları",
     "config-menu.button.config": "Ayarlar",
     "config-menu.font-size": "Yazı Boyutu",
+    "config-menu.hover-only": "Sadece Üzerine Gelince Göster",
     "config-menu.text-color-type.label": "Yazı Rengi Türü",
     "config-menu.text-color-type.fixed": "Sabit renk",
     "config-menu.text-color-type.inverted": "Kutunun tersi",

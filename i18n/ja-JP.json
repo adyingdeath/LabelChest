@@ -6,6 +6,7 @@
     "config-menu.title": "箱ラベル設定",
     "config-menu.button.config": "設定",
     "config-menu.font-size": "フォントサイズ",
+    "config-menu.hover-only": "マウスホバー時のみ表示",
     "config-menu.text-color-type.label": "文字色タイプ",
     "config-menu.text-color-type.fixed": "固定色",
     "config-menu.text-color-type.inverted": "箱の色の反対",

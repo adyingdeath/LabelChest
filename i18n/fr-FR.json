@@ -6,6 +6,7 @@
     "config-menu.title": "Paramètres d'Étiquettes de Coffres",
     "config-menu.button.config": "Configuration",
     "config-menu.font-size": "Taille de police",
+    "config-menu.hover-only": "Afficher uniquement au survol",
     "config-menu.text-color-type.label": "Type de couleur de texte",
     "config-menu.text-color-type.fixed": "Couleur fixe",
     "config-menu.text-color-type.inverted": "Inverse de la boîte",

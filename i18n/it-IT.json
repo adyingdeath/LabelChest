@@ -6,6 +6,7 @@
     "config-menu.title": "Impostazioni Etichette Bauli",
     "config-menu.button.config": "Configurazione",
     "config-menu.font-size": "Dimensione carattere",
+    "config-menu.hover-only": "Mostra solo al passaggio del mouse",
     "config-menu.text-color-type.label": "Tipo colore testo",
     "config-menu.text-color-type.fixed": "Colore fisso",
     "config-menu.text-color-type.inverted": "Inverso della scatola",

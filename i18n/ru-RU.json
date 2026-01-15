@@ -6,6 +6,7 @@
     "config-menu.title": "Настройки Меток Сундуков",
     "config-menu.button.config": "Настройки",
     "config-menu.font-size": "Размер шрифта",
+    "config-menu.hover-only": "Показывать только при наведении",
     "config-menu.text-color-type.label": "Тип цвета текста",
     "config-menu.text-color-type.fixed": "Фиксированный цвет",
     "config-menu.text-color-type.inverted": "Инвертированный цвет ящика",

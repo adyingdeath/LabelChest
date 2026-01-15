@@ -6,6 +6,7 @@
     "config-menu.title": "Configurações de Rótulo de Baús",
     "config-menu.button.config": "Configurações",
     "config-menu.font-size": "Tamanho da Fonte",
+    "config-menu.hover-only": "Mostrar apenas ao passar o mouse",
     "config-menu.text-color-type.label": "Tipo de Cor do Texto",
     "config-menu.text-color-type.fixed": "Cor fixa",
     "config-menu.text-color-type.inverted": "Inverso da caixa",

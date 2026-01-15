@@ -6,6 +6,7 @@
     "config-menu.title": "箱子标签设置",
     "config-menu.button.config": "设置",
     "config-menu.font-size": "字体大小",
+    "config-menu.hover-only": "仅鼠标悬停时显示",
     "config-menu.text-color-type.label": "文本颜色类型",
     "config-menu.text-color-type.fixed": "固定颜色",
     "config-menu.text-color-type.inverted": "与箱子颜色相反",

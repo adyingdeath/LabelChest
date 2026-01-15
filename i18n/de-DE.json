@@ -6,6 +6,7 @@
     "config-menu.title": "Truhenbeschriftung Einstellungen",
     "config-menu.button.config": "Einstellungen",
     "config-menu.font-size": "Schriftgröße",
+    "config-menu.hover-only": "Nur bei Mouseover anzeigen",
     "config-menu.text-color-type.label": "Textfarbe Typ",
     "config-menu.text-color-type.fixed": "Feste Farbe",
     "config-menu.text-color-type.inverted": "Umgekehrt zur Box",

@@ -21,6 +21,12 @@ namespace LabelChest {
         /// Final scale = FontSize * WorldFontScale.
         /// </summary>
         public float FontSize { get; set; } = 1.0f;
+        
+        /// <summary>
+        /// Whether to show the label only when the mouse/cursor is hovering over the chest.
+        /// </summary>
+        public bool HoverOnly { get; set; } = false;
+
         public TextColorType TextColorType { get; set; } = TextColorType.Fixed;
         /// <summary>
         /// Text color. Default is white.
@@ -37,6 +43,7 @@ namespace LabelChest {
         /// </summary>
         public void ResetToDefaults() {
             FontSize = 1.0f;
+            HoverOnly = false;
             TextColorType = TextColorType.Fixed;
             TextColor = Color.White;
             OutlineColorType = OutlineColorType.Inverted;

@@ -6,6 +6,7 @@
     "config-menu.title": "Configuración de Etiquetas de Cofres",
     "config-menu.button.config": "Configuración",
     "config-menu.font-size": "Tamaño de fuente",
+    "config-menu.hover-only": "Mostrar solo al pasar el ratón",
     "config-menu.text-color-type.label": "Tipo de color de texto",
     "config-menu.text-color-type.fixed": "Color fijo",
     "config-menu.text-color-type.inverted": "Inverso de la caja",

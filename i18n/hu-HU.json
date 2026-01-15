@@ -6,6 +6,7 @@
     "config-menu.title": "Láda Címke Beállítások",
     "config-menu.button.config": "Beállítások",
     "config-menu.font-size": "Betűméret",
+    "config-menu.hover-only": "Csak rámutatáskor jelenjen meg",
     "config-menu.text-color-type.label": "Szöveg színtípus",
     "config-menu.text-color-type.fixed": "Rögzített szín",
     "config-menu.text-color-type.inverted": "Doboz fordítottja",
