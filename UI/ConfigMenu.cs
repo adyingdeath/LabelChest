@@ -136,7 +136,8 @@ public class ConfigMenu : LOptionsPage {
             "outline-color-fixed"
         );
 
-        optionsManager.Hide("no-android");
+        if (Constants.TargetPlatform == GamePlatform.Android)
+            optionsManager.Hide("no-android");
 
         // Apply initial visibility based on default values
         ApplyUIValues();
